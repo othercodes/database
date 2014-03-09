@@ -36,14 +36,14 @@ $usuarios = $db->loadObjectList();
 
 En el código de arriba vemos que primero obtenemos una instancia, luego ejecutamos la consulta y finalmente obtenemos los datos en forma de lista de objetos. Esta clase nos permite obtener los datos de las siguientes maneras:
 
-* Objeto unico:loadObject();
-* Lista de objetos:loadObjectList();
-* Array asociada:loadAssocRow();
-* Lista de arrays arrociadas:loadAssocList();
-* Array indexado: loadIndexedRow();
-* Lista de arrays indexados: loadIndexedList();
+* *Objeto unico*:loadObject();
+* *Lista de objetos*:loadObjectList();
+* *Array asociada*:loadAssocRow();
+* *Lista de arrays arrociadas*:loadAssocList();
+* *Array indexado*: loadIndexedRow();
+* *Lista de arrays indexados*: loadIndexedList();
 
-Podemos realizar consultas preparadas de forma fácil y sencilla, usando el mismo método query(), al cual le pasaremos la consulta preparada y un array opcional con los parámetros de dicha consulta:
+Podemos realizar consultas preparadas de forma fácil y sencilla, usando el mismo método *query()*, al cual le pasaremos la consulta preparada y un array opcional con los parámetros de dicha consulta:
 
 ```php
 $db = database::getInstance();
@@ -56,7 +56,7 @@ $result = $db->loadObject();
 Transacciones
 =============
 
-También podemos realizar transacciones de una manera muy sencilla usando los métodos startTransaction() y endTransaction() tal y como vemos en el ejemplo:
+También podemos realizar transacciones de una manera muy sencilla usando los métodos *startTransaction()* y *endTransaction()* tal y como vemos en el ejemplo:
 
 ```php
 $db = database::getInstance();
@@ -66,12 +66,12 @@ $db->query("INSERT INTO usuarios VALUES (NULL, 'Vincent', 'Vega')");
 $db->endTransaction();
 ```
 
-El método startTransaction() inicia la transacción y activa la escucha de errores para que cuando se ejecute el método endTransaction() se ejecute commit() si todo a ido bien o rollback() a ocurrido algún fallo en las consultas.
+El método *startTransaction()* inicia la transacción y activa la escucha de errores para que cuando se ejecute el método *endTransaction()* se ejecute *commit()* si todo a ido bien o *rollback()* a ocurrido algún fallo en las consultas.
 
 Errores
 =======
 
-Esta clase también nos permite obtener los posibles errores de cada consulta usando el método getError(), que nos devolverá un array asociativo con el código de error y la descripción de dicho error:
+Esta clase también nos permite obtener los posibles errores de cada consulta usando el método *getError()*, que nos devolverá un array asociativo con el código de error y la descripción de dicho error:
 
 ```php
 $db = database::getInstance();
