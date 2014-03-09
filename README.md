@@ -5,6 +5,7 @@ Capa de abstracción de acceso a base de datos (PDO)
 Configuración
 Bien, lo primero que debemos hacer para usar la capa de abstracción, es crear una nueva clase a la que llamaremos Config y que contendrá los parámetros de configuración de la BD, así como otros valores de configuración para nuestra aplicación web.
 
+```php
 class Config {
     public $driver = 'mysql';
     public $dbhost = 'localhost';
@@ -12,7 +13,7 @@ class Config {
     public $dbpass = 'clave_basedatos';
     public $dbname = 'nombre_basedatos';
 }
-
+```
 
 Una vez que hemos configurado los datos de acceso, debemos importar la configuración y la capa de abstracción:
 
