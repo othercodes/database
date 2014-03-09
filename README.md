@@ -85,5 +85,5 @@ Al imprimir la variable error veremos:
 ```php
 array (size=2)
   'code' => int 1146
-  'desc' => string 'Table "test.suarios" doesn't exist' (length=34)
+  'desc' => string "Table 'test.suarios' doesn't exist" (length=34)
 ```
