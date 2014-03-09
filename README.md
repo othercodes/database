@@ -36,12 +36,12 @@ $usuarios = $db->loadObjectList();
 
 En el código de arriba vemos que primero obtenemos una instancia, luego ejecutamos la consulta y finalmente obtenemos los datos en forma de lista de objetos. Esta clase nos permite obtener los datos de las siguientes maneras:
 
--Objeto unico:loadObject();
--Lista de objetos:loadObjectList();
--Array asociada:loadAssocRow();
--Lista de arrays arrociadas:loadAssocList();
--Array indexado: loadIndexedRow();
--Lista de arrays indexados: loadIndexedList();
+* Objeto unico:loadObject();
+* Lista de objetos:loadObjectList();
+* Array asociada:loadAssocRow();
+* Lista de arrays arrociadas:loadAssocList();
+* Array indexado: loadIndexedRow();
+* Lista de arrays indexados: loadIndexedList();
 
 Podemos realizar consultas preparadas de forma fácil y sencilla, usando el mismo método query(), al cual le pasaremos la consulta preparada y un array opcional con los parámetros de dicha consulta:
 
