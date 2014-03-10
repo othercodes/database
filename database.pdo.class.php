@@ -39,6 +39,12 @@ class database {
     private $affectedRows = 0;
     
     /**
+     * Numero de filas de una consulta SELECT.
+     * @var int 
+     */
+    private $countRows = 0;
+    
+    /**
      * Contructor de la clase de abstraccion, solo es accesible desde el metodo
      * estatico getInstance().
      */
@@ -75,6 +81,28 @@ class database {
     }
     
     /**
+     * Carga un unico resultado(campo).
+     * @return type
+     */
+    public function loadResult(){
+        $singleResult = $this->stmt->fetch(PDO::FETCH_NUM);
+        return $singleResult[0];
+    }
+    
+    /**
+     * Carga los valores de una sola columna.
+     * @return array
+     */
+    public function loadColumn(){
+        $columnList = array();
+        while($row = $this->stmt->fetch(PDO::FETCH_NUM)){
+            $columnList[] = $row[0];
+        }
+        $this->countRows = count($columnList);
+        return $columnList;
+    }
+
+    /**
      * Transforma el resultado de una consulta en un objeto.
      * @param string $class_name nombre de la clase del objeto.
      * @return object objetos final
@@ -95,6 +123,7 @@ class database {
         while($object = $this->stmt->fetchObject($class_name)){
             $objectList[] = $object;
         }
+        $this->countRows = count($objectList);
         return $objectList;
     }
     
@@ -116,6 +145,7 @@ class database {
         while($row = $this->stmt->fetch(PDO::FETCH_ASSOC)){
             $assocList[] = $row;
         }
+        $this->countRows = count($assocList);
         return $assocList;
     }
     
@@ -124,8 +154,8 @@ class database {
      * @return array 
      */
     public function loadIndexedRow(){
-        $assocRow = $this->stmt->fetch(PDO::FETCH_NUM);
-        return $assocRow;
+        $indexedRow = $this->stmt->fetch(PDO::FETCH_NUM);
+        return $indexedRow;
     }
     
     /**
@@ -133,11 +163,12 @@ class database {
      * @return array matriz php de datos.
      */
     public function loadIndexedList(){
-        $assocList = array();
+        $indexedList = array();
         while($row = $this->stmt->fetch(PDO::FETCH_NUM)){
-            $assocList[] = $row;
+            $indexedList[] = $row;
         }
-        return $assocList;
+        $this->countRows = count($indexedList);
+        return $indexedList;
     }
     
     /**
@@ -213,6 +244,14 @@ class database {
         return $this->affectedRows;
     }
     
+    /**
+     * Devuelve el contador de filas.
+     * @return int
+     */
+    public function getCountRows(){
+        return $this->countRows;
+    }
+
     /**
      * Devuleve el ultimo error producido en la conexion con la base de datos
      * @return array datos del error ['code'] y ['desc'].
