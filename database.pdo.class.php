@@ -197,6 +197,29 @@ class database {
     }
     
     /**
+     * Devuelve el resultado en fomrato XML.
+     * @param string $version version del documento XML.
+     * @param string $encoding encodeo del documento XML.
+     * @param string $root elemento padre del documento.
+     * @param string $elementName nombre de cada nodo hijo.
+     * @return string
+     */
+    public function loadXmlDocument($version = '1.0',$encoding = 'UTF-8',$root = 'table',$elementName = 'entry'){
+        $xml = new DOMDocument($version,$encoding);
+        $table = $xml->createElement($root);
+        foreach ($this->loadAssocList() as $entry){ 
+            $element = $xml->createElement($elementName);
+            foreach ($entry as $node => $value) {   
+                $field = $xml->createElement($node,$value);
+                $element->appendChild($field);
+            }
+            $table->appendChild($element);
+        }
+        $xml->appendChild($table);
+        return $xml->saveXML();
+    }
+    
+    /**
      * Inicia una transaccion.
      */
     public function startTransaction(){
