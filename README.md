@@ -55,8 +55,11 @@ $params = array(':id' => 2);
 $db->query($sql,$params);
 $result = $db->loadObject();
 ```
-JSON Format
+Formato JSON
 ===========
+
+Podemos obterner los datos de la BD en formato JSON con el metodo *loadJsonObjectList()*, el resultado sera algo asi:
+
 ```javascript
 [
     {"id":"1","nombre":"Hombre J.","apellido":"Simpson"},
@@ -64,7 +67,31 @@ JSON Format
     {"id":"3","nombre":"Sheldon","apellido":"Cooper"}
 ]
 ```
+Formato XML
+===========
 
+Tambien tenemos la posibilidad de obtener los datos en formato XML usando el metodo *loadXmlDocument()*:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<usuarios>
+    <usuario>
+        <id>1</id>
+        <nombre>Hombre J.</nombre>
+        <apellido>Simpson</apellido>
+    </usuario>
+    <usuario>
+        <id>2</id>
+        <nombre>Walter</nombre>
+        <apellido>White</apellido>
+    </usuario>
+    <usuario>
+        <id>3</id>
+        <nombre>Sheldon</nombre>
+        <apellido>Cooper</apellido>
+    </usuario>
+</usuarios>
+```
 
 Transacciones
 =============
