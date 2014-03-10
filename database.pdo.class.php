@@ -4,7 +4,7 @@
  * @author David Unay Santisteban <slavepens@gmail.com>
  * @package SlaveFramework
  * @copyright (c) 2014, David Unay Santisteban
- * @version 2.6.20140306
+ * @version 2.8.20140310
  */
  
 class database {
