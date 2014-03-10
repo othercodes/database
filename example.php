@@ -66,4 +66,10 @@ if($status == 1){
 } else {
     echo "ERROR";
 }
+
+// simple query, result in XML Document
+$sql = "SELECT * FROM usuarios";
+$db->query($sql);
+$usuarios = $db->loadXmlDocument('1.0','UTF-8');
+var_dump($usuarios);
 ?>
