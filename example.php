@@ -8,7 +8,7 @@ $db = database::getInstance();
 // simple query, list of objects
 $sql = "SELECT * FROM usuarios";
 $db->query($sql);
-$usuarios = $db->loadObjectList();
+$usuarios = $db->loadAssocList();
 var_dump($usuarios);
 
 // simple query JSON List
@@ -26,12 +26,28 @@ $db->query($sql,$params);
 $usuario = $db->loadObject();
 var_dump($usuario);
 
-// query with parameters, one assoc array
-$sql = "SELECT * FROM usuarios WHERE id = :id";
+//insert example
+$sql = "INSERT INTO usuarios(id,nombre,apellido) VALUES (NULL, :nombre, :apellido)";
 $params = array(
-    ':id' => 2
+    ':nombre' => 'Tim',
+    ':apellido' => 'Burton'
 );
 $db->query($sql,$params);
-$usuario = $db->loadAssoc();
-var_dump($usuario);
+if($db->getAffectedRows() == 1){
+    echo "SUCCESS";
+} else {
+    $e = $db->getError();
+    echo "ERROR ".$e['code']. ": ".$e['desc'];
+}
+
+// transacction example
+$db->startTransaction();
+$db->query("INSERT INTO usuarios VALUES (NULL, 'Tyrande', 'Whisperwind')");
+$db->query("INSERT INTO usuarios VALUES (NULL, 'Vincent', 'Vega')");
+$status = $db->endTransaction();
+if($status == 1){
+    echo "SUCCESS";
+} else {
+    echo "ERROR";
+}
 ?>
