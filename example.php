@@ -1,5 +1,6 @@
+<?php 
 include 'configuration.php';
-inlcude 'database.pdo.class.php';
+include 'database.pdo.class.php';
 
 // get a instance
 $db = database::getInstance();
@@ -24,3 +25,13 @@ $params = array(
 $db->query($sql,$params);
 $usuario = $db->loadObject();
 var_dump($usuario);
+
+// query with parameters, one assoc array
+$sql = "SELECT * FROM usuarios WHERE id = :id";
+$params = array(
+    ':id' => 2
+);
+$db->query($sql,$params);
+$usuario = $db->loadAssoc();
+var_dump($usuario);
+?>
