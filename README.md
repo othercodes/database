@@ -55,6 +55,16 @@ $params = array(':id' => 2);
 $db->query($sql,$params);
 $result = $db->loadObject();
 ```
+JSON Format
+===========
+```javascript
+[
+    {"id":"1","nombre":"Hombre J.","apellido":"Simpson"},
+    {"id":"2","nombre":"Walter","apellido":"White"},
+    {"id":"3","nombre":"Sheldon","apellido":"Cooper"}
+]
+```
+
 
 Transacciones
 =============
