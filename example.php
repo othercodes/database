@@ -5,6 +5,22 @@ include 'database.pdo.class.php';
 // get a instance
 $db = database::getInstance();
 
+// query of single field
+$sql = "SELECT nombre FROM usuarios WHERE id = 1";
+$db->query($sql);
+$nombre = $db->loadResult();
+var_dump($nombre);
+
+// query of single field, list
+$sql = "SELECT nombre FROM usuarios";
+$db->query($sql);
+$nombres = $db->loadColumn();
+var_dump($nombres);
+
+// get the numbers of rows returned in the SELECT
+$count = $db->getCountRows();
+var_dump($count);
+
 // simple query, list of objects
 $sql = "SELECT * FROM usuarios";
 $db->query($sql);
@@ -14,8 +30,8 @@ var_dump($usuarios);
 // simple query JSON List
 $sql = "SELECT * FROM usuarios";
 $db->query($sql);
-$usuario = $db->loadJsonObjectList();
-var_dump($usuario);
+$usuarios = $db->loadJsonObjectList();
+var_dump($usuarios);
 
 // query with parameters, one object
 $sql = "SELECT * FROM usuarios WHERE id = :id";
