@@ -42,6 +42,8 @@ En el código de arriba vemos que primero obtenemos una instancia, luego ejecuta
 * *Lista de arrays arrociadas*:loadAssocList();
 * *Array indexado*: loadIndexedRow();
 * *Lista de arrays indexados*: loadIndexedList();
+* *Objeto JSON*: loadJsonObject();
+* *Lista de Objetos JSON*: loadJsonObjectList();
 
 Podemos realizar consultas preparadas de forma fácil y sencilla, usando el mismo método *query()*, al cual le pasaremos la consulta preparada y un array opcional con los parámetros de dicha consulta:
 
