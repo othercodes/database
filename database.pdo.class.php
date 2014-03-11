@@ -204,14 +204,21 @@ class database {
      * @param string $elementName nombre de cada nodo hijo.
      * @return string
      */
-    public function loadXmlDocument($version = '1.0',$encoding = 'UTF-8',$root = 'table',$elementName = 'entry'){
+    public function loadXmlDocument($version = '1.0',$encoding = 'utf-8',$root = 'query',$elementName = 'entry'){
         $xml = new DOMDocument($version,$encoding);
         $table = $xml->createElement($root);
         foreach ($this->loadAssocList() as $entry){ 
             $element = $xml->createElement($elementName);
-            foreach ($entry as $node => $value) {   
-                $field = $xml->createElement($node,$value);
-                $element->appendChild($field);
+            foreach ($entry as $node => $value) {
+                if ($this->valideXmlValue($value)) {
+                    $field = $xml->createElement($node,$value);
+                    $element->appendChild($field);
+                } else {
+                    $field = $xml->createElement($node);
+                    $cdata = $xml->createCDATASection($value);
+                    $field->appendChild($cdata);
+                    $element->appendChild($field);
+                }  
             }
             $table->appendChild($element);
         }
@@ -245,21 +252,6 @@ class database {
     }
     
     /**
-     * Comprueba si la consulta se a realizado de manera correcta o no.
-     */
-    private function checkQuery(){
-        $this->error = $this->stmt->errorInfo();
-        if ($this->error[0] != 00000) {
-            $this->sentinel = 0;
-        }
-        // simpre que se realiza un SELECT esto pone $sentinel a 1
-        $this->affectedRows = $this->stmt->rowCount();
-        if ($this->affectedRows == 0){
-            $this->sentinel = 0;
-        }
-    }
-    
-    /**
      * Devuleve el numero de filas afectadas en la consulta.
      * @return int numero de filas afectadas.
      */
@@ -285,6 +277,38 @@ class database {
         $e['code'] = $this->error[1];
         $e['desc'] = $this->error[2];
         return $e;
+    }
+    
+    /**
+     * Comprueba si la consulta se a realizado de manera correcta o no.
+     */
+    private function checkQuery(){
+        $this->error = $this->stmt->errorInfo();
+        if ($this->error[0] != 00000) {
+            $this->sentinel = 0;
+        }
+        // simpre que se realiza un SELECT esto pone $sentinel a 1
+        $this->affectedRows = $this->stmt->rowCount();
+        if ($this->affectedRows == 0){
+            $this->sentinel = 0;
+        }
+    }
+    
+    /**
+     * Comprueba si existen caracteres ilegales en el valor del campo
+     * para marcarlo como elemento CDATA.
+     * @param mixed $value
+     * @return boolean 
+     */
+    private function valideXmlValue($value){
+        $chars = array('<','>','&');
+        foreach($chars as $ilegal) {
+            $state = strpos($value, $ilegal);
+            if($state !== FALSE){
+                return FALSE;
+            }
+        }
+        return TRUE;
     }
 }
 ?>
