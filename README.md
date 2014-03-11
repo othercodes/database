@@ -92,6 +92,11 @@ Tambien tenemos la posibilidad de obtener los datos en formato XML usando el met
     </usuario>
 </usuarios>
 ```
+Opcionalmente podemos exportar nuestro XML generado a un archivo externo pasandole el nombre del archivo a la funcion *loadXmlDocument()* por ejemplo:
+
+```php 
+$result = $db->loadXmlDocument('userlist.xml');
+```
 
 Transacciones
 =============
