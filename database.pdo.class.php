@@ -6,7 +6,6 @@
  * @copyright (c) 2014, David Unay Santisteban
  * @version 2.8.20140310
  */
- 
 class database {
     /**
      * Objeto de conexion PDO.
@@ -204,8 +203,8 @@ class database {
      * @param string $elementName nombre de cada nodo hijo.
      * @return string
      */
-    public function loadXmlDocument($version = '1.0',$encoding = 'utf-8',$root = 'query',$elementName = 'entry'){
-        $xml = new DOMDocument($version,$encoding);
+    public function loadXmlDocument($file = null, $root = 'query',$elementName = 'entry'){
+        $xml = new DOMDocument('1.0','utf-8');
         $table = $xml->createElement($root);
         foreach ($this->loadAssocList() as $entry){ 
             $element = $xml->createElement($elementName);
@@ -223,7 +222,11 @@ class database {
             $table->appendChild($element);
         }
         $xml->appendChild($table);
-        return $xml->saveXML();
+        if ($file != null) {
+            return file_put_contents($file, $xml->saveXML());
+        } else {
+            return $xml->saveXML();
+        }
     }
     
     /**
