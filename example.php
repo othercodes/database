@@ -35,9 +35,7 @@ var_dump($usuarios);
 
 // query with parameters, one object
 $sql = "SELECT * FROM usuarios WHERE id = :id";
-$params = array(
-    ':id' => 1
-);
+$params = array(':id' => 1);
 $db->query($sql,$params);
 $usuario = $db->loadObject();
 var_dump($usuario);
