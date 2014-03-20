@@ -6,14 +6,12 @@ include 'database.pdo.class.php';
 $db = database::getInstance();
 
 // query of single field
-$sql = "SELECT nombre FROM usuarios WHERE id = 1";
-$db->query($sql);
+$db->query("SELECT nombre FROM usuarios WHERE id = 1");
 $nombre = $db->loadResult();
 var_dump($nombre);
 
 // query of single field, list
-$sql = "SELECT nombre FROM usuarios";
-$db->query($sql);
+$db->query("SELECT nombre FROM usuarios");
 $nombres = $db->loadColumn();
 var_dump($nombres);
 
@@ -22,14 +20,12 @@ $count = $db->getCountRows();
 var_dump($count);
 
 // simple query, list of objects
-$sql = "SELECT * FROM usuarios";
-$db->query($sql);
+$db->query("SELECT * FROM usuarios");
 $usuarios = $db->loadAssocList();
 var_dump($usuarios);
 
 // simple query JSON List
-$sql = "SELECT * FROM usuarios";
-$db->query($sql);
+$db->query("SELECT * FROM usuarios");
 $usuarios = $db->loadJsonObjectList();
 var_dump($usuarios);
 
@@ -66,8 +62,11 @@ if($status == 1){
 }
 
 // simple query, result in XML Document
-$sql = "SELECT * FROM usuarios";
-$db->query($sql);
-$usuarios = $db->loadXmlDocument('1.0','UTF-8');
+$db->query("SELECT * FROM usuarios");
+$usuarios = $db->loadXmlDocument();
+var_dump($usuarios);
+// or to export to an external xml file
+$db->query("SELECT * FROM usuarios");
+$usuarios = $db->loadXmlDocument('name.xml');
 var_dump($usuarios);
 ?>
