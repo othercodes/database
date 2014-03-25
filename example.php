@@ -19,7 +19,7 @@ var_dump($nombres);
 $count = $db->getCountRows();
 var_dump($count);
 
-// simple query, list of objects
+// simple query, list of assoc arrays
 $db->query("SELECT * FROM usuarios");
 $usuarios = $db->loadAssocList();
 var_dump($usuarios);
