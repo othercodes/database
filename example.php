@@ -2,7 +2,7 @@
 include 'configuration.php';
 include 'database.pdo.class.php';
 
-// get a instance
+// get a instance, singletone pattern
 $db = database::getInstance();
 
 // query of single field
@@ -29,11 +29,15 @@ $db->query("SELECT * FROM usuarios");
 $usuarios = $db->loadJsonObjectList();
 var_dump($usuarios);
 
-// query with parameters, one object
+// query with parameters (named placeholders), one object
 $sql = "SELECT * FROM usuarios WHERE id = :id";
 $params = array(':id' => 1);
+// or query with parameters (positional ? placeholders)
+$sql = "SELECT * FROM usuarios WHERE id = ?";
+$params = array(1 => 1);
 $db->query($sql,$params);
-$usuario = $db->loadObject();
+// instantiating a predefinied user class, leave empty to load a StdClass
+$usuario = $db->loadObject('user');
 var_dump($usuario);
 
 //insert example
