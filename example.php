@@ -2,7 +2,7 @@
 include 'configuration.php';
 include 'database.pdo.class.php';
 
-// this ar many examples of the usage of this class
+// this are many examples of the usage of this class
 // get a instance, singletone pattern, always required
 $db = database::getInstance();
 
