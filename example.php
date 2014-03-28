@@ -2,75 +2,76 @@
 include 'configuration.php';
 include 'database.pdo.class.php';
 
-// get a instance, singletone pattern
+// this ar many examples of the usage of this class
+// get a instance, singletone pattern, always required
 $db = database::getInstance();
 
-// query of single field
-$db->query("SELECT nombre FROM usuarios WHERE id = 1");
-$nombre = $db->loadResult();
-var_dump($nombre);
+// example of query of single field
+$db->query("SELECT name FROM users WHERE id = 1");
+$name = $db->loadResult();
+var_dump($name);
 
-// query of single field, list
-$db->query("SELECT nombre FROM usuarios");
-$nombres = $db->loadColumn();
-var_dump($nombres);
+// example of query of single field, list
+$db->query("SELECT name FROM users");
+$names = $db->loadColumn();
+var_dump($names);
 
-// get the numbers of rows returned in the SELECT
+// example of get the numbers of rows returned in the SELECT
 $count = $db->getCountRows();
 var_dump($count);
 
-// simple query, list of assoc arrays
-$db->query("SELECT * FROM usuarios");
-$usuarios = $db->loadAssocList();
-var_dump($usuarios);
+// example of simple query, list of assoc arrays
+$db->query("SELECT * FROM users");
+$users = $db->loadAssocList();
+var_dump($users);
 
-// simple query JSON List
-$db->query("SELECT * FROM usuarios");
-$usuarios = $db->loadJsonObjectList();
-var_dump($usuarios);
+// example of simple query JSON List
+$db->query("SELECT * FROM users");
+$users = $db->loadJsonObjectList();
+var_dump($users);
 
-// query with parameters (named placeholders), one object
-$sql = "SELECT * FROM usuarios WHERE id = :id";
+// example of query with parameters (named placeholders), one object
+$sql = "SELECT * FROM users WHERE id = :id";
 $params = array(':id' => 1);
-// or query with parameters (positional ? placeholders)
-$sql = "SELECT * FROM usuarios WHERE id = ?";
-$params = array(1 => 1);
 $db->query($sql,$params);
-// instantiating a predefinied user class, leave empty to load a StdClass
-$usuario = $db->loadObject('user');
-var_dump($usuario);
+// instantiating a StdClass
+$user = $db->loadObject();
+var_dump($user);
 
 //insert example
-$sql = "INSERT INTO usuarios(id,nombre,apellido) VALUES (NULL, :nombre, :apellido)";
+$sql = "INSERT INTO users(id,name,surname) VALUES (NULL, :name, :surname)";
 $params = array(
-    ':nombre' => 'Tim',
-    ':apellido' => 'Burton'
+    ':name' => 'Tim',
+    ':surname' => 'Burton'
 );
 $db->query($sql,$params);
 if($db->getAffectedRows() == 1){
-    echo "SUCCESS";
+    echo "SUCCESS<br />\n";
 } else {
     $e = $db->getError();
-    echo "ERROR ".$e['code']. ": ".$e['desc'];
+    echo "ERROR ".$e['code']. ": ".$e['desc']."<br />\n";
 }
 
 // transacction example
 $db->startTransaction();
-$db->query("INSERT INTO usuarios VALUES (NULL, 'Tyrande', 'Whisperwind')");
-$db->query("INSERT INTO usuarios VALUES (NULL, 'Vincent', 'Vega')");
+$db->query("INSERT INTO users(id,name,surname) VALUES (NULL, 'Tyrande', 'Whisperwind')");
+$db->query("INSERT INTO users(id,name,surname) VALUES (NULL, 'Vincent', 'Vega')");
 $status = $db->endTransaction();
 if($status == 1){
-    echo "SUCCESS";
+    echo "SUCCESS<br />\n";
 } else {
-    echo "ERROR";
+    echo "ERROR<br />\n";
 }
 
-// simple query, result in XML Format
-$db->query("SELECT * FROM usuarios");
-$usuarios = $db->loadXmlDocument();
-var_dump($usuarios);
+// example of simple query, result in XML Format
+$db->query("SELECT * FROM users");
+$users = $db->loadXmlDocument();
+// this will dump a string with the xml result
+echo $users;
+
+
 // or to export to an external xml file
-$db->query("SELECT * FROM usuarios");
-$usuarios = $db->loadXmlDocument('name.xml');
-var_dump($usuarios);
+$db->query("SELECT * FROM users");
+// no format, all in one line
+$users = $db->loadXmlDocument('users.xml');
 ?>
