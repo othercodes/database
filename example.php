@@ -33,6 +33,9 @@ var_dump($users);
 // example of query with parameters (named placeholders), one object
 $sql = "SELECT * FROM users WHERE id = :id";
 $params = array(':id' => 1);
+// or example of query with parameters (? placeholders), one object
+$sql = "SELECT * FROM users WHERE id = :id";
+$params = array(1);
 $db->query($sql,$params);
 // instantiating a StdClass
 $user = $db->loadObject();
