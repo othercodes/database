@@ -34,14 +34,14 @@ var_dump($users);
 $sql = "SELECT * FROM users WHERE id = :id";
 $params = array(':id' => 1);
 // or example of query with parameters (? placeholders), one object
-$sql = "SELECT * FROM users WHERE id = :id";
+$sql = "SELECT * FROM users WHERE id = ?";
 $params = array(1);
 $db->query($sql,$params);
 // instantiating a StdClass
 $user = $db->loadObject();
 var_dump($user);
 
-//insert example
+// insert example
 $sql = "INSERT INTO users(id,name,surname) VALUES (NULL, :name, :surname)";
 $params = array(
     ':name' => 'Tim',
@@ -49,10 +49,10 @@ $params = array(
 );
 $db->query($sql,$params);
 if($db->getAffectedRows() == 1){
-    echo "SUCCESS<br />\n";
+    echo "Success<br />\n";
 } else {
     $e = $db->getError();
-    echo "ERROR ".$e['code']. ": ".$e['desc']."<br />\n";
+    echo "Error ".$e['code']. ": ".$e['desc']."<br />\n";
 }
 
 // transacction example
@@ -61,9 +61,9 @@ $db->query("INSERT INTO users(id,name,surname) VALUES (NULL, 'Tyrande', 'Whisper
 $db->query("INSERT INTO users(id,name,surname) VALUES (NULL, 'Vincent', 'Vega')");
 $status = $db->endTransaction();
 if($status == 1){
-    echo "SUCCESS<br />\n";
+    echo "Success<br />\n";
 } else {
-    echo "ERROR<br />\n";
+    echo "Error<br />\n";
 }
 
 // example of simple query, result in XML Format
@@ -72,9 +72,19 @@ $users = $db->loadXmlDocument();
 // this will dump a string with the xml result
 echo $users;
 
+echo "<br />\n";
 
 // or to export to an external xml file
 $db->query("SELECT * FROM users");
 // no format, all in one line
 $users = $db->loadXmlDocument('users.xml');
+
+
+// example of data export to a csv file.
+$db->query("SELECT * FROM users");
+if($db->loadCSVFile('users')){
+    echo "Export Complete<br />\n";
+} else {
+    echo "Error<br />\n";
+}
 ?>
