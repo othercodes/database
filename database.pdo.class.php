@@ -229,6 +229,19 @@ class database {
         }
     }
     
+    
+    public function loadCSVFile($file = null){
+        if($file == null){
+            $file = date('Ymd-His');
+        }
+        $writer = fopen($file.'.csv', 'w');
+        $temp = $this->loadIndexedList();
+        foreach ($temp as $row){
+            fputcsv($writer, $row);
+        }
+        return fclose($writer); 
+    }
+    
     /**
      * Inicia una transaccion.
      */
