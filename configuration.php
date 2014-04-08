@@ -2,8 +2,8 @@
 class Config {
     public $driver = 'mysql';
     public $dbhost = 'localhost';
-    public $dbuser = 'userdb';
-    public $dbpass = 'passdb';
+    public $dbuser = 'root';
+    public $dbpass = 'root';
     public $dbname = 'test';
 }
 ?>
