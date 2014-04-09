@@ -62,7 +62,7 @@ Podemos obterner los datos de la BD en formato JSON con el metodo *loadJsonObjec
 
 ```javascript
 [
-    {"id":"1","nombre":"Hombre J.","apellido":"Simpson"},
+    {"id":"1","nombre":"Homer J.","apellido":"Simpson"},
     {"id":"2","nombre":"Walter","apellido":"White"},
     {"id":"3","nombre":"Sheldon","apellido":"Cooper"}
 ]
@@ -77,7 +77,7 @@ Tambien tenemos la posibilidad de obtener los datos en formato XML usando el met
 <usuarios>
     <usuario>
         <id>1</id>
-        <nombre>Hombre J.</nombre>
+        <nombre>Homer J.</nombre>
         <apellido>Simpson</apellido>
     </usuario>
     <usuario>
@@ -103,11 +103,17 @@ Formato CSV
 
 Podemos exportar los datos de nuestra consulta a un documento csv facilmente usando el metodo *loadCSVFile()* al cual le pasaremos el nombre del archivo .csv donde se exportaran los datos.
 
-```csv
+```php
 $db->loadCSVFile('userlist');
 ```
 
 Nos generara "userlist.csv".
+
+```csv
+1, "Homer J.", Simpson
+2, Walter, White
+3, Sheldon, Cooper
+```
 
 Transacciones
 =============
