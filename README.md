@@ -95,8 +95,19 @@ Tambien tenemos la posibilidad de obtener los datos en formato XML usando el met
 Opcionalmente podemos exportar nuestro XML generado a un archivo externo pasandole el nombre del archivo a la funcion *loadXmlDocument()* por ejemplo:
 
 ```php 
-$result = $db->loadXmlDocument('userlist.xml');
+$db->loadXmlDocument('userlist.xml');
 ```
+
+Formato CSV
+===========
+
+Podemos exportar los datos de nuestra consulta a un documento csv facilmente usando el metodo *loadCSVFile()* al cual le pasaremos el nombre del archivo .csv donde se exportaran los datos.
+
+```csv
+$db->loadCSVFile('userlist');
+```
+
+Nos generara "userlist.csv".
 
 Transacciones
 =============
