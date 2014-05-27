@@ -287,6 +287,14 @@ class database {
     public function getCountRows(){
         return $this->countRows;
     }
+    
+    /**
+     * Obtiene el ultimo id insertado en la consulta anterior
+     * @return int
+     */ 
+    public function getLastId(){
+        return $this->instance->lastInsertId();
+    }
 
     /**
      * Devuleve el ultimo error producido en la conexion con la base de datos
