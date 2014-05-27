@@ -5,5 +5,6 @@ class Config {
     public $dbuser = 'root';
     public $dbpass = 'root';
     public $dbname = 'test';
+    public $prefix = 'ts_';
 }
 ?>
