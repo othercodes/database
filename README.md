@@ -1,6 +1,8 @@
 database-pdo-class
 ==================
-Capa de abstracción de acceso a base de datos (PDO)
+Capa de abstracción de acceso a base de datos (PDO), permite realizar consultas a diferentes sistemas de base de datos usando una misma interfaz.
+
+Los sistemas de Base de Datos soportados son: http://www.php.net/manual/es/pdo.drivers.php
 
 Configuración
 =============
@@ -14,6 +16,7 @@ class Config {
     public $dbuser = 'usuario_basedatos';
     public $dbpass = 'clave_basedatos';
     public $dbname = 'nombre_basedatos';
+    public $prefix = 'pr_';
 }
 ```
 
@@ -30,11 +33,13 @@ Ahora ya podemos usar la capa con total libertad, por ejemplo si queremos realiz
 
 ```php
 $db = database::getInstance();
-$db->query('SELECT * FROM usuarios');
+$db->query('SELECT * FROM #__users');
 $usuarios = $db->loadObjectList();
 ```
 
-En el código de arriba vemos que primero obtenemos una instancia, luego ejecutamos la consulta y finalmente obtenemos los datos en forma de lista de objetos. Esta clase nos permite obtener los datos de las siguientes maneras:
+En el código de arriba vemos que primero obtenemos una instancia, luego ejecutamos la consulta usando como prefijo #__, esto es sustituido por el prefijo configurado en el archivo de configuracion. Finalmente obtenemos los datos en forma de lista de objetos. 
+
+Esta clase nos permite obtener los datos de las siguientes maneras:
 
 * *Objeto unico*:loadObject();
 * *Lista de objetos*:loadObjectList();
@@ -50,7 +55,7 @@ Podemos realizar consultas preparadas de forma fácil y sencilla, usando el mism
 
 ```php
 $db = database::getInstance();
-$sql = "SELECT * FROM usuarios WHERE id = :id";
+$sql = "SELECT * FROM #__users WHERE id = :id";
 $params = array(':id' => 2);
 $db->query($sql,$params);
 $result = $db->loadObject();
@@ -123,8 +128,8 @@ También podemos realizar transacciones de una manera muy sencilla usando los m�
 ```php
 $db = database::getInstance();
 $db->startTransaction();
-$db->query("INSERT INTO usuarios VALUES (NULL, 'Tyrande', 'Whisperwind')");
-$db->query("INSERT INTO usuarios VALUES (NULL, 'Vincent', 'Vega')");
+$db->query("INSERT INTO #__users VALUES (NULL, 'Tyrande', 'Whisperwind')");
+$db->query("INSERT INTO #__users VALUES (NULL, 'Vincent', 'Vega')");
 $db->endTransaction();
 ```
 
@@ -137,7 +142,7 @@ Esta clase también nos permite obtener los posibles errores de cada consulta us
 
 ```php
 $db = database::getInstance();
-$db->query('SELECT * FROM suarios');
+$db->query('SELECT * FROM #__sers');
 $error = $db->getError();
 var_dump($error);
 ```
@@ -147,5 +152,5 @@ Al imprimir la variable error veremos:
 ```php
 array (size=2)
   'code' => int 1146
-  'desc' => string "Table 'test.suarios' doesn't exist" (length=34)
+  'desc' => string "Table 'test.pr_sers' doesn't exist" (length=34)
 ```
