@@ -7,6 +7,8 @@
  * @version 2.9.20140408
  */
 class database {
+    
+    private $config;
     /**
      * Objeto de conexion PDO.
      * @var Object 
@@ -48,9 +50,9 @@ class database {
      * estatico getInstance().
      */
     private function __construct() {
-        $config = new Config();
+        $this->config = new Config();
         try {
-            $this->instance = new PDO($config->driver.':host='.$config->dbhost.';dbname='.$config->dbname, $config->dbuser, $config->dbpass);
+            $this->instance = new PDO($this->config->driver.':host='.$this->config->dbhost.';dbname='.$this->config->dbname, $this->config->dbuser, $this->config->dbpass);
             return $this->instance;
         } catch (Exception $e) {
             echo "Se ha producido un error en la conexion con la BD."; 
@@ -74,6 +76,9 @@ class database {
      * @param string $sql sentencia SQL a ejecutar.
      */
     public function query($sql,$params = null) {
+        if(isset($this->config->prefix)){
+            $sql = str_replace('#__',$this->config->prefix,$sql);
+        }
         $this->stmt = $this->instance->prepare($sql);
         $this->stmt->execute($params);
         $this->checkQuery();
