@@ -176,28 +176,11 @@ class database {
     }
     
     /**
-     * Devuleve el resultado de una sola linea a notacion JSON.
-     * @return string
-     */
-    public function loadJsonObject(){
-        $jsonObject = json_encode($this->stmt->fetch(PDO::FETCH_ASSOC));
-        return $jsonObject;
-    }
-    
-    /**
-     * Devuleve el resultado en un array en notacion JSON.
+     * Devuleve el resultado en notacion JSON.
      * @return string
      */
     public function loadJsonObjectList(){
-        $index = 1;
-        $jsonObjectList = "";
-        while($row = $this->loadAssocList()){
-            $jsonObjectList .= json_encode($row);
-            if($index <= (count($this->loadAssocList())-1)){
-                $jsonObjectList .= ",";
-            }
-        }
-        return $jsonObjectList;
+        return json_encode($this->loadAssocList());
     }
     
     /**
