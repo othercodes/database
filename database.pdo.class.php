@@ -6,7 +6,7 @@
  * @copyright (c) 2014, David Unay Santisteban
  * @version 2.9.20140408
  */
-class database {
+Class Database {
     
     private $config;
     /**
@@ -301,9 +301,6 @@ class database {
         }
         // simpre que se realiza un SELECT esto pone $sentinel a 1
         $this->affectedRows = $this->stmt->rowCount();
-        if ($this->affectedRows == 0){
-            $this->sentinel = 0;
-        }
     }
     
     /**
