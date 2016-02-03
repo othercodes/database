@@ -1,0 +1,21 @@
+{
+  "name": "othercode/database",
+  "type": "library",
+  "license": "MIT",
+  "description": "Database access library",
+  "authors": [
+    {
+      "name": "David Unay Santisteban",
+      "email": "usantisteban@othercode.es",
+      "role": "developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "OtherCode\\Database\\": "src/"
+    }
+  }
+}
