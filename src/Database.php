@@ -8,11 +8,13 @@ class Database
 {
 
     /**
+     * List of available connections
      * @var array
      */
-    private static $connections = array();
+    private $connections = array();
 
     /**
+     * Create a new PDO connection
      * @param array $config
      * @param string $name
      */
@@ -31,7 +33,7 @@ class Database
         $connector = "OtherCode\\Database\\Connectors\\" . $connectors[$config['driver']] . "Connector";
         $connection = new $connector();
 
-        self::$connections[$name] = $connection->connect($config);
+        $this->connections[$name] = $connection->connect($config);
 
     }
 

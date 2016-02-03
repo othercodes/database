@@ -9,7 +9,7 @@ use Exception;
  * Class Connector
  * @package OtherCode\Database\Connectors
  */
-class Connector
+abstract class Connector
 {
 
     /**
