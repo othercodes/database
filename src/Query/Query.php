@@ -10,8 +10,9 @@ class Query
         'SELECT',
         'INSERT',
         'UPDATE',
+        'DELETE',
         'FROM',
-        'SELECT'
+        'WHERE'
     );
 
     protected $operators = array(
@@ -23,41 +24,44 @@ class Query
         'not similar to'
     );
 
-    private $select = array();
+    private $select;
 
-    private $update = array();
+    private $update;
 
-    private $updateValues = array();
+    private $delete;
 
-    private $delete = false;
+    private $from;
 
-    private $from = array();
+    private $where;
 
-    private $where = array();
+    private $groups;
+
+    private $orders;
+
+    private $limit;
 
     public function select(Array $columns = array('*'))
     {
         $this->select = $columns;
+        return $this;
     }
 
-    public function delete()
+    public function delete($id = null)
     {
-        $this->delete = true;
+        $this->delete = $id;
+        return $this;
     }
 
-    public function update(Array $tables)
+    public function update(array $values)
     {
-        $this->update = $tables;
-    }
-
-    public function setValues(Array $values)
-    {
-        $this->updateValues = $values;
+        $this->update = $values;
+        return $this;
     }
 
     public function from(Array $tables)
     {
         $this->from = $tables;
+        return $this;
     }
 
     public function where($column, $operator, $value)
@@ -67,6 +71,7 @@ class Query
             'operator' => $operator,
             'value' => $value,
         );
+        return $this;
     }
 
     private function compileQuery()
@@ -108,6 +113,9 @@ class Query
             $sql[] = $sentence . implode(" ",$where);
 
         }
+
+
+
         return $sql;
     }
 

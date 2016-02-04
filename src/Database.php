@@ -37,6 +37,14 @@ class Database
 
     }
 
+    public function query($new = false)
+    {
+
+
+
+
+    }
+
 
 
 

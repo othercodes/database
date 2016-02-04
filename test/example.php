@@ -12,7 +12,7 @@ $db->addConnection(array(
     'host' => 'localhost',
     'dbname' => 'test',
     'username' => 'root',
-    'password' => ''
+    'password' => 'root'
 ),'foro');
 
 $db->addConnection(array(
@@ -20,11 +20,13 @@ $db->addConnection(array(
     'dbname' => 'database.sqlite',
 ),'cache');
 
+$db->query(true);
+
+
 
 $query = new Query();
-$query->update(array('name'));
-$query->setValues(array('name'));
-$query->where('id','=',2);
+$query->select();
+$query->from(array('ts_users'));
 $query->where('name','=','Walter');
 
 var_dump($query);
