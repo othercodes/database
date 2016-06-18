@@ -1,4 +1,4 @@
-<?php
+	<?php
 
 namespace OtherCode\Database;
 
@@ -40,12 +40,5 @@ class Database
     public function query($new = false)
     {
 
-
-
-
     }
-
-
-
-
 }

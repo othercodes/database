@@ -1,6 +1,6 @@
 <?php 
 
-require_once "../vendor/autoload.php";
+require_once "../autoload.php";
 
 use OtherCode\Database\Database;
 use OtherCode\Database\Query\Query;
@@ -13,16 +13,18 @@ $db->addConnection(array(
     'dbname' => 'test',
     'username' => 'root',
     'password' => 'root'
-),'foro');
+),'test');
 
+/*
 $db->addConnection(array(
     'driver' => 'sqlite',
     'dbname' => 'database.sqlite',
 ),'cache');
+*/
 
 $db->query(true);
 
-
+var_dump($db);
 
 $query = new Query();
 $query->select();
@@ -32,3 +34,4 @@ $query->where('name','=','Walter');
 var_dump($query);
 
 print $query;
+*/
