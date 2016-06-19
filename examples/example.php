@@ -15,12 +15,10 @@ $db->addConnection(array(
     'password' => 'root'
 ),'test');
 
-/*
 $db->addConnection(array(
     'driver' => 'sqlite',
     'dbname' => 'database.sqlite',
 ),'cache');
-*/
 
 $db->query(true);
 
@@ -34,4 +32,3 @@ $query->where('name','=','Walter');
 var_dump($query);
 
 print $query;
-*/

@@ -1,8 +1,6 @@
-	<?php
+<?php
 
 namespace OtherCode\Database;
-
-use InvalidArgumentException;
 
 class Database
 {
@@ -17,6 +15,7 @@ class Database
      * Create a new PDO connection
      * @param array $config
      * @param string $name
+     * @throws \InvalidArgumentException
      */
     public function addConnection(Array $config, $name = 'default')
     {
@@ -27,7 +26,7 @@ class Database
         );
 
         if(!isset($config['driver']) || !array_key_exists($config['driver'],$connectors)){
-            throw new InvalidArgumentException("The selected driver is not valid.");
+            throw new \InvalidArgumentException("The selected driver is not valid.");
         }
 
         $connector = "OtherCode\\Database\\Connectors\\" . $connectors[$config['driver']] . "Connector";

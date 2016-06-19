@@ -2,8 +2,6 @@
 
 namespace OtherCode\Database\Query;
 
-use InvalidArgumentException;
-
 class Query
 {
     protected $statements = array(
@@ -74,6 +72,10 @@ class Query
         return $this;
     }
 
+    /**
+     * @return array
+     * @throws \InvalidArgumentException
+     */
     private function compileQuery()
     {
         $sql = array();
@@ -98,11 +100,11 @@ class Query
         foreach ($this->where as $index => $where) {
 
             if(!is_string($where['column'])){
-                throw new InvalidArgumentException("The column field is not a string.");
+                throw new \InvalidArgumentException("The column field is not a string.");
             }
 
             if(!is_string($where['operator']) || !in_array($where['operator'],$this->operators)){
-                throw new InvalidArgumentException("Invalid operator.");
+                throw new \InvalidArgumentException("Invalid operator.");
             }
 
             if (gettype($where['value']) == 'string') {

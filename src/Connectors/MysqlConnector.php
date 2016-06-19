@@ -2,8 +2,6 @@
 
 namespace OtherCode\Database\Connectors;
 
-use PDO;
-
 /**
  * Class MysqlConnector
  * @package OtherCode\Database\Connectors
@@ -26,7 +24,7 @@ class MysqlConnector extends Connector
     /**
      * Create the actual connection.
      * @param array $config
-     * @return null|PDO
+     * @return \PDO
      */
     public function connect(Array $config)
     {

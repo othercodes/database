@@ -2,8 +2,6 @@
 
 namespace OtherCode\Database\Connectors;
 
-use PDO;
-
 /**
  * Class PostgresConnector
  * @package OtherCode\Database\Connectors
@@ -14,7 +12,7 @@ class PostgresConnector extends Connector
     /**
      * Create the actual connection.
      * @param array $config
-     * @return null|PDO
+     * @return \PDO
      */
     public function connect(Array $config)
     {

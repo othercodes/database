@@ -2,9 +2,6 @@
 
 namespace OtherCode\Database\Connectors;
 
-use PDO;
-use Exception;
-
 /**
  * Class Connector
  * @package OtherCode\Database\Connectors
@@ -16,17 +13,18 @@ abstract class Connector
      * @var array
      */
     protected $options = array(
-        PDO::ATTR_CASE => PDO::CASE_NATURAL,
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_ORACLE_NULLS => PDO::NULL_NATURAL,
-        PDO::ATTR_STRINGIFY_FETCHES => false,
+        \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+        \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+        \PDO::ATTR_STRINGIFY_FETCHES => false,
     );
 
     /**
      * @param $dsn
      * @param array $config
      * @param array $options
-     * @return null|PDO
+     * @return \PDO
+     * @throws \Exception
      */
     public function createConnection($dsn, Array $config, Array $options)
     {
@@ -37,8 +35,8 @@ abstract class Connector
         $password = isset($config['password']) ? $config['password'] : null;
 
         try {
-            $pdo = new PDO($dsn, $username, $password, $options);
-        } catch (Exception $e) {
+            $pdo = new \PDO($dsn, $username, $password, $options);
+        } catch (\Exception $e) {
 
             /**
              * @todo handle this exception
