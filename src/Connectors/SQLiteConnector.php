@@ -2,6 +2,10 @@
 
 namespace OtherCode\Database\Connectors;
 
+/**
+ * Class SQLiteConnector
+ * @package OtherCode\Database\Connectors
+ */
 class SQLiteConnector extends Connector
 {
 

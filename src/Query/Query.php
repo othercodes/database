@@ -56,9 +56,17 @@ class Query
         return $this;
     }
 
-    public function from(Array $tables)
+    /**
+     * @param array|string $tables
+     * @return $this
+     */
+    public function from($tables)
     {
-        $this->from = $tables;
+        if (is_array($tables)) {
+            $this->from = $tables;
+        } else {
+            $this->from = array($tables);
+        }
         return $this;
     }
 
@@ -80,30 +88,29 @@ class Query
     {
         $sql = array();
 
-        if(count($this->select) > 0){
-            $sql[] = "SELECT " . implode(',',$this->select);
+        if (count($this->select) > 0) {
+            $sql[] = "SELECT " . implode(',', $this->select);
         }
 
-        if(count($this->update) > 0)
-        {
-            $sql[] = "UPDATE " . implode(",",$this->update);
+        if (count($this->update) > 0) {
+            $sql[] = "UPDATE " . implode(",", $this->update);
         }
 
-        if($this->delete){
+        if ($this->delete) {
             $sql[] = "DELETE ";
         }
 
-        if(count($this->select) > 0) {
+        if (count($this->select) > 0) {
             $sql[] = "FROM " . implode(',', $this->from);
         }
 
         foreach ($this->where as $index => $where) {
 
-            if(!is_string($where['column'])){
+            if (!is_string($where['column'])) {
                 throw new \InvalidArgumentException("The column field is not a string.");
             }
 
-            if(!is_string($where['operator']) || !in_array($where['operator'],$this->operators)){
+            if (!is_string($where['operator']) || !in_array($where['operator'], $this->operators)) {
                 throw new \InvalidArgumentException("Invalid operator.");
             }
 
@@ -112,10 +119,9 @@ class Query
             }
 
             $sentence = ($index == 0) ? "WHERE " : "AND ";
-            $sql[] = $sentence . implode(" ",$where);
+            $sql[] = $sentence . implode(" ", $where);
 
         }
-
 
 
         return $sql;

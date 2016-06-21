@@ -16,7 +16,7 @@ class PostgresConnector extends Connector
      */
     public function connect(Array $config)
     {
-        $dsn = $this->getDsn($config);
+        $dsn = $this->getDSN($config);
         $options = $this->getOptions($config);
 
         $connection = $this->createConnection($dsn, $config, $options);
@@ -37,7 +37,7 @@ class PostgresConnector extends Connector
      * @param array $config
      * @return string
      */
-    protected function getDsn(Array $config)
+    protected function getDSN(Array $config)
     {
         $dsn = "pgsql:{$config['host']}dbname={$config['dbname']}";
 

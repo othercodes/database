@@ -2,10 +2,7 @@
 
 require_once "../autoload.php";
 
-use OtherCode\Database\Database;
-use OtherCode\Database\Query\Query;
-
-$db = new Database();
+$db = new OtherCode\Database\Database();
 
 $db->addConnection(array(
     'driver' => 'mysql',
@@ -15,20 +12,18 @@ $db->addConnection(array(
     'password' => 'root'
 ),'test');
 
-$db->addConnection(array(
-    'driver' => 'sqlite',
-    'dbname' => 'database.sqlite',
-),'cache');
-
-$db->query(true);
-
 var_dump($db);
 
-$query = new Query();
+$query = $db->getQuery();
 $query->select();
-$query->from(array('ts_users'));
+$query->from('ts_users');
 $query->where('name','=','Walter');
 
-var_dump($query);
+print $query;
+
+$query = $db->getQuery(true);
+$query->select();
+$query->from('ts_users');
+$query->where('surname','=','White');
 
 print $query;

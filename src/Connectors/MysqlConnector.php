@@ -28,11 +28,11 @@ class MysqlConnector extends Connector
      */
     public function connect(Array $config)
     {
-        $dsn = $this->getDsn($config);
+        $dsn = $this->getDSN($config);
         $options = $this->getOptions($config);
 
         $connection = $this->createConnection($dsn, $config, $options);
-
+        
         $charset = isset($config['charset']) ? $config['charset'] : $this->charset;
         $collation = isset($config['collation']) ? $config['collation'] : $this->collation;
 
@@ -51,9 +51,9 @@ class MysqlConnector extends Connector
      * @param array $config
      * @return string
      */
-    protected function getDsn(Array $config)
+    protected function getDSN(Array $config)
     {
-        if(isset($config['port'])){
+        if (isset($config['port'])) {
             $dsn = "mysql:host={$config['host']};port={$config['port']};dbname={$config['dbname']}";
         } else {
             $dsn = "mysql:host={$config['host']};dbname={$config['dbname']}";

@@ -10,6 +10,7 @@ abstract class Connector
 {
 
     /**
+     * Options
      * @var array
      */
     protected $options = array(
@@ -24,7 +25,8 @@ abstract class Connector
      * @param array $config
      * @param array $options
      * @return \PDO
-     * @throws \Exception
+     * @throws \PDOException
+     * @throws \Othercode\Database\Exceptions\ConnectionException
      */
     public function createConnection($dsn, Array $config, Array $options)
     {
@@ -39,10 +41,9 @@ abstract class Connector
         } catch (\Exception $e) {
 
             /**
-             * @todo handle this exception
+             * @TODO maybe reconnect if fail?
              */
-            var_dump($e);
-
+            throw new \OtherCode\Database\Exceptions\ConnectionException($e->getMessage(),$e->getCode());
         }
 
         return $pdo;
