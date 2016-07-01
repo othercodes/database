@@ -60,7 +60,7 @@ class Database
      * @param \OtherCode\Database\Query\Query $query
      * @return $this
      */
-    public function setQuery(\OtherCode\Database\Query\Query $query)
+    public function setQuery(\OtherCode\Database\Query\Query $query, $params = null)
     {
 
         return $this;
@@ -82,14 +82,17 @@ class Database
     
     public function loadResult()
     {
+
     }
 
     public function loadColumn()
     {
+
     }
 
     public function loadObject($class_name = "stdClass")
     {
+
     }
 
     public function loadObjectList($class_name = "stdClass")
