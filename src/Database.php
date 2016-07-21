@@ -21,6 +21,12 @@ class Database
     private $connections = array();
 
     /**
+     * The query to be executed
+     * @var \OtherCode\Database\Query\Query
+     */
+    protected $query;
+
+    /**
      * Create a new PDO connection
      * @param array $config
      * @param string $name
@@ -48,10 +54,15 @@ class Database
 
     /**
      * Return a new Query instance
+     * @param boolean $new
      * @return Query\Query
      */
-    public function getQuery()
+    public function getQuery($new = false)
     {
+        if ($this->query instanceof \OtherCode\Database\Query\Query && !$new) {
+            return $this->query;
+        }
+
         return new \OtherCode\Database\Query\Query();
     }
 
@@ -60,9 +71,9 @@ class Database
      * @param \OtherCode\Database\Query\Query $query
      * @return $this
      */
-    public function setQuery(\OtherCode\Database\Query\Query $query, $params = null)
+    public function setQuery(\OtherCode\Database\Query\Query $query)
     {
-
+        $this->query = $query;
         return $this;
     }
 
@@ -79,7 +90,16 @@ class Database
         return $this;
     }
 
-    
+    /**
+     * Execute the current query
+     * @param null|array $params
+     */
+    public function execute($params = null)
+    {
+        $this->stmt = $this->instance->prepare($sql);
+        $this->stmt->execute($params);
+    }
+
     public function loadResult()
     {
 

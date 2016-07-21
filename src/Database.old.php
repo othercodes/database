@@ -67,7 +67,7 @@ class Database
     /**
      * Obtienen una instancia nueva de la conexion de la BD o devuelve el id
      * de una ya creada si es que existe.
-     * @return id de instancia de conexion MySQL.
+     * @return $this id de instancia de conexion MySQL.
      */
     public static function getInstance()
     {
