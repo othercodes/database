@@ -8,7 +8,6 @@ namespace OtherCode\Database\Connectors;
  */
 class SQLiteConnector extends Connector
 {
-
     /**
      * @param array $config
      * @return \PDO

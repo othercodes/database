@@ -17,14 +17,14 @@ try {
     $query = $db->getQuery();
     $query->select();
     $query->from('ts_users');
-    $query->where('name', '=', 'Walter');
+    $query->where('name', '=', ':name');
 
     $db->setQuery($query);
-    $db->execute();
+    $db->execute(array(':name' => 'Walter'));
 
     $result = $db->loadObject();
 
-    var_dump($db, $result);
+    var_dump($result);
 
 } catch (\Exception $e) {
 

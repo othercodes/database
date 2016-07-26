@@ -148,9 +148,10 @@ class Database
 
     /**
      * Return a single column
+     * @param int $index
      * @return array|null
      */
-    public function loadColumn()
+    public function loadColumn($index = 0)
     {
         if ($this->stmt === null) {
             return null;
@@ -158,7 +159,7 @@ class Database
 
         $columnList = array();
         while ($row = $this->stmt->fetch(\PDO::FETCH_NUM)) {
-            $columnList[] = $row[0];
+            $columnList[] = $row[$index];
         }
         return $columnList;
     }

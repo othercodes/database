@@ -9,6 +9,7 @@ namespace OtherCode\Database\Query;
 class Query
 {
     /**
+     * Allowed clauses
      * @var array
      */
     protected $statements = array(
@@ -21,6 +22,7 @@ class Query
     );
 
     /**
+     * Allowed operators
      * @var array
      */
     protected $operators = array(
@@ -33,42 +35,50 @@ class Query
     );
 
     /**
-     * @var
+     * Select values
+     * @var array
      */
     private $select;
 
     /**
-     * @var
+     * Update values
+     * @var array
      */
     private $update;
 
     /**
-     * @var
+     * Delete values
+     * @var array
      */
     private $delete;
 
     /**
-     * @var
+     * From values
+     * @var array
      */
     private $from;
 
     /**
-     * @var
+     * Where conditions
+     * @var array
      */
     private $where;
 
     /**
-     * @var
+     * Groups values
+     * @var array
      */
     private $groups;
 
     /**
-     * @var
+     * Order by values
+     * @var array
      */
     private $orders;
 
     /**
-     * @var
+     * Limit values
+     * @var array
      */
     private $limit;
 
@@ -171,7 +181,7 @@ class Query
                 throw new \OtherCode\Database\Exceptions\QueryException("Invalid operator in where clause.");
             }
 
-            if (gettype($where['value']) == 'string') {
+            if (gettype($where['value']) == 'string' && stripos($where['value'],':') === false) {
                 $where['value'] = '"' . $where['value'] . '"';
             }
 

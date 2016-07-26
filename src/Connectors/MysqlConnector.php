@@ -32,7 +32,7 @@ class MysqlConnector extends Connector
         $options = $this->getOptions($config);
 
         $connection = $this->createConnection($dsn, $config, $options);
-        
+
         $charset = isset($config['charset']) ? $config['charset'] : $this->charset;
         $collation = isset($config['collation']) ? $config['collation'] : $this->collation;
 
