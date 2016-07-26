@@ -15,7 +15,7 @@ class ConnecionTest extends \PHPUnit_Framework_TestCase
             'password' => ''
         ));
 
-        $this->assertInstanceOf('\OtherCode\Database\Database', $db);
+        $this->assertInstanceOf('\PDO', $db->getConnection());
     }
 
     public function testPostgreSQLConnection()
@@ -30,7 +30,7 @@ class ConnecionTest extends \PHPUnit_Framework_TestCase
             'password' => ''
         ));
 
-        $this->assertInstanceOf('\OtherCode\Database\Database', $db);
+        $this->assertInstanceOf('\PDO', $db->getConnection());
     }
 
 

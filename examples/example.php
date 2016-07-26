@@ -11,7 +11,7 @@ try {
         'host' => 'localhost',
         'dbname' => 'test',
         'username' => 'root',
-        'password' => ''
+        'password' => 'root'
     ));
 
     $query = $db->getQuery();

@@ -59,6 +59,19 @@ class Database
     }
 
     /**
+     * Return a connection
+     * @param string $name
+     * @return \PDO|null
+     */
+    public function getConnection($name = 'default')
+    {
+        if(array_key_exists($name, $this->connections)){
+            return $this->connections[$name];
+        }
+        return null;
+    }
+
+    /**
      * Return a new Query instance
      * @param boolean $new
      * @return Query\Query
