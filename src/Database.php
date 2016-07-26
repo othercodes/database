@@ -120,6 +120,7 @@ class Database
 
     /**
      * Return a single filed.
+     * @param int $index
      * @return mixed|null
      */
     public function loadResult($index = 0)

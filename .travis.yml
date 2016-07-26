@@ -20,9 +20,9 @@ services:
 
 before_script:
   - mysql -u root -e "create database IF NOT EXISTS test;"
-  - mysql -u root test < examples/example-database.sql -u root
+  - mysql -u root test < examples/sql/mysql.sql -u root
   - psql -c 'create database test;' -U postgres
-  - psql -d test -a -f examples/example-database.sql
+  - psql -d test -a -f examples/sql/pgsql.sql
 
 script:
   - phpunit -c ./tests/phpunit.xml
