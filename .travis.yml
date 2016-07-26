@@ -1,9 +1,25 @@
 language: php
+
 php:
   - '5.3'
   - '5.4'
   - '5.5'
   - '5.6'
   - '7.0'
+
+addons:
+  apt:
+    packages:
+      - mysql-server-5.6
+      - mysql-client-core-5.6
+      - mysql-client-5.6
+    services:
+      - mysql
+      - postgresql
+
+before_script:
+  - if [[ $TRAVIS_PHP_VERSION = hhvm ]]; then mysql  -e 'create database test;'; fi
+  - if [[ $TRAVIS_PHP_VERSION = hhvm ]]; then mysql test < examples/example-database.sql; fi
+
 script:
   - phpunit -c ./tests/phpunit.xml
