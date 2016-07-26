@@ -43,7 +43,7 @@ abstract class Connector
             /**
              * @TODO maybe reconnect if fail?
              */
-            throw new \OtherCode\Database\Exceptions\ConnectionException($e->getMessage(),$e->getCode());
+            throw new \OtherCode\Database\Exceptions\ConnectionException($e->getMessage(), $e->getCode());
         }
 
         return $pdo;

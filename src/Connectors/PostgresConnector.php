@@ -21,12 +21,12 @@ class PostgresConnector extends Connector
 
         $connection = $this->createConnection($dsn, $config, $options);
 
-        $charset = $config['charset'];
-        $connection->prepare("set names '$charset'")->execute();
+        if (isset($config['charset'])) {
+            $connection->prepare("set names '" . $config['charset'] . "'")->execute();
+        }
 
         if (isset($config['timezone'])) {
-            $timezone = $config['timezone'];
-            $connection->prepare("set time zone '$timezone'")->execute();
+            $connection->prepare("set time zone '" . $config['timezone'] . "'")->execute();
         }
 
         return $connection;
