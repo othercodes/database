@@ -8,18 +8,23 @@ php:
   - '7.0'
 
 dist: trusty
-
+sudo: required
 addons:
   apt:
     packages:
-      - mysql-server
-      - mysql-client
-    services:
-      - mysql
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
+
+services:
+  - mysql
+  - postgresql
 
 before_script:
-  - if [[ $TRAVIS_PHP_VERSION = hhvm ]]; then mysql -u root -e 'create database test;'; fi
-  - if [[ $TRAVIS_PHP_VERSION = hhvm ]]; then mysql -u root test < examples/example-database.sql; fi
+  - mysql -u root -e "create database IF NOT EXISTS test;"
+  - mysql -u root test < examples/example-database.sql -u root
+  - psql -c 'create database test;' -U postgres
+  - psql -d test -a -f examples/example-database.sql
 
 script:
   - phpunit -c ./tests/phpunit.xml
