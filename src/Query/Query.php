@@ -2,8 +2,15 @@
 
 namespace OtherCode\Database\Query;
 
+/**
+ * Class Query
+ * @package OtherCode\Database\Query
+ */
 class Query
 {
+    /**
+     * @var array
+     */
     protected $statements = array(
         'SELECT',
         'INSERT',
@@ -13,6 +20,9 @@ class Query
         'WHERE'
     );
 
+    /**
+     * @var array
+     */
     protected $operators = array(
         '=', '<', '>', '<=', '>=', '<>', '!=',
         'like', 'like binary', 'not like', 'between', 'ilike',
@@ -22,34 +32,73 @@ class Query
         'not similar to'
     );
 
+    /**
+     * @var
+     */
     private $select;
 
+    /**
+     * @var
+     */
     private $update;
 
+    /**
+     * @var
+     */
     private $delete;
 
+    /**
+     * @var
+     */
     private $from;
 
+    /**
+     * @var
+     */
     private $where;
 
+    /**
+     * @var
+     */
     private $groups;
 
+    /**
+     * @var
+     */
     private $orders;
 
+    /**
+     * @var
+     */
     private $limit;
 
+    /**
+     * Add a select clause
+     * @param array $columns
+     * @return $this
+     */
     public function select(Array $columns = array('*'))
     {
         $this->select = $columns;
         return $this;
     }
 
+    /**
+     * Add a delete clause
+     * @param null $id
+     * @return $this
+     */
     public function delete($id = null)
     {
         $this->delete = $id;
         return $this;
     }
 
+    /**
+     * Add an update clause
+     * @param array $values
+     * @return $this
+     */
     public function update(array $values)
     {
         $this->update = $values;
@@ -70,6 +119,13 @@ class Query
         return $this;
     }
 
+    /**
+     * Add a where clause
+     * @param $column
+     * @param $operator
+     * @param $value
+     * @return $this
+     */
     public function where($column, $operator, $value)
     {
         $this->where[] = array(
@@ -81,10 +137,11 @@ class Query
     }
 
     /**
-     * @return array
-     * @throws \InvalidArgumentException
+     * Compile each clause of the query to SQL
+     * @return string
+     * @throws \OtherCode\Database\Exceptions\QueryException
      */
-    private function compileQuery()
+    public function compile()
     {
         $sql = array();
 
@@ -107,11 +164,11 @@ class Query
         foreach ($this->where as $index => $where) {
 
             if (!is_string($where['column'])) {
-                throw new \InvalidArgumentException("The column field is not a string.");
+                throw new \OtherCode\Database\Exceptions\QueryException("The column field is not a string in where clause.");
             }
 
             if (!is_string($where['operator']) || !in_array($where['operator'], $this->operators)) {
-                throw new \InvalidArgumentException("Invalid operator.");
+                throw new \OtherCode\Database\Exceptions\QueryException("Invalid operator in where clause.");
             }
 
             if (gettype($where['value']) == 'string') {
@@ -123,12 +180,19 @@ class Query
 
         }
 
-
-        return $sql;
+        return implode(" ", $sql);
     }
 
+    /**
+     * Return the final sql string
+     * @return string
+     */
     public function __toString()
     {
-        return implode(" ", $this->compileQuery());
+        try {
+            return $this->compile();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

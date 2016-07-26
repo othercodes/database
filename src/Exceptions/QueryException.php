@@ -3,13 +3,13 @@
 namespace OtherCode\Database\Exceptions;
 
 /**
- * Class ConnectionException
+ * Class QueryException
  * @package OtherCode\Database\Exceptions
  */
-class ConnectionException extends \Exception
+class QueryException extends \Exception
 {
     /**
-     * ConnectionException constructor.
+     * QueryException constructor.
      * @param string $message
      * @param int $code
      * @param \Throwable $previous Previous exception
