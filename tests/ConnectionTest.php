@@ -1,6 +1,6 @@
 <?php
 
-class ConnecionTest extends \PHPUnit_Framework_TestCase
+class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
     public function testInstantiation()
     {
@@ -22,7 +22,7 @@ class ConnecionTest extends \PHPUnit_Framework_TestCase
             'password' => ''
         ), 'mysql');
 
-        $this->assertInstanceOf('\PDO', $db->getConnection());
+        $this->assertInstanceOf('\PDO', $db->getConnection('mysql'));
     }
 
     /**
