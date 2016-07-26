@@ -32,4 +32,6 @@ class ConnecionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\OtherCode\Database\Database', $db);
     }
+
+
 }

@@ -39,7 +39,7 @@ class PostgresConnector extends Connector
      */
     protected function getDSN(Array $config)
     {
-        $dsn = "pgsql:{$config['host']}dbname={$config['dbname']}";
+        $dsn = "pgsql:host={$config['host']};dbname={$config['dbname']}";
 
         if (isset($config['port'])) {
             $dsn .= ";port={$config['port']}";
