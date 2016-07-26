@@ -23,6 +23,7 @@ before_script:
   - mysql -u root test < examples/sql/mysql.sql -u root
   - psql -c 'create database test;' -U postgres
   - psql -d test -a -f examples/sql/pgsql.sql
+  - sqlite3 examples/test.sqlite < examples/sql/sqlite.sql
 
 script:
   - phpunit -c ./tests/phpunit.xml

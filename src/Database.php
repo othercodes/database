@@ -127,7 +127,7 @@ class Database
 
         } catch (\PDOException $e) {
 
-            throw new \OtherCode\Database\Exceptions\DatabaseException("Execute error: " . $e->getMessage(), $e->getCode(), $e);
+            throw new \OtherCode\Database\Exceptions\DatabaseException("Execute error: " . $e->getMessage(), $e->getCode());
         }
     }
 

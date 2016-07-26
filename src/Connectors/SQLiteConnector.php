@@ -25,10 +25,10 @@ class SQLiteConnector extends Connector
         $path = realpath($config['dbname']);
 
         if ($path === false) {
-            throw new \InvalidArgumentException("Database (${config['dbname']}) does not exist.");
+            throw new \InvalidArgumentException("Database " . $config['dbname'] . " does not exist.");
         }
 
-        return $this->createConnection("sqlite:{$path}", $config, $options);
+        return $this->createConnection("sqlite:" . $path, $config, $options);
     }
 
 }
