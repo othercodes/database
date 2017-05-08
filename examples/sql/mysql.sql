@@ -5,6 +5,5 @@ CREATE TABLE ts_users (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-INSERT INTO ts_users VALUES
-  (1,'Walter','White'),
-  (2,'Sheldon','Cooper');
+INSERT INTO ts_users VALUES (1,'Walter','White');
+INSERT INTO ts_users VALUES (2,'Sheldon','Cooper');
