@@ -1,5 +1,7 @@
 # OtherCode Database
 
+[![Build Status](https://travis-ci.org/othercodes/database.svg?branch=master)](https://travis-ci.org/othercodes/database) [![Latest Stable Version](https://poser.pugx.org/othercode/database/v/stable)](https://packagist.org/packages/othercode/database) [![License](https://poser.pugx.org/othercode/database/license)](https://packagist.org/packages/othercode/database) [![Total Downloads](https://poser.pugx.org/othercode/database/downloads)](https://packagist.org/packages/othercode/database)
+
 Light database abstraction layer (PDO) 
 
 Currently supported:
