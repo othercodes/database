@@ -26,4 +26,4 @@ before_script:
   - sqlite3 examples/test.sqlite < examples/sql/sqlite.sql
 
 script:
-  - phpunit -c ./tests/phpunit.xml
+  - phpunit -c ./phpunit.xml
