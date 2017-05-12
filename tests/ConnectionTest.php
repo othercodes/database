@@ -1,7 +1,8 @@
 <?php
 
-class ConnectionTest extends \PHPUnit_Framework_TestCase
+class ConnectionTest extends \PHPUnit\Framework\TestCase
 {
+
     public function testInstantiation()
     {
         $db = new \OtherCode\Database\Database();
