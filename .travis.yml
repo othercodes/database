@@ -26,7 +26,7 @@ before_script:
   - sqlite3 examples/test.sqlite < examples/sql/sqlite.sql
 
 install:
-- composer install
+  - composer install
 
 script:
-  - vendor/bin/phpunit -c ./phpunit.xml
+  - ./vendor/bin/phpunit -c ./phpunit.xml
