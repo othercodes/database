@@ -171,23 +171,25 @@ class Query
             $sql[] = "FROM " . implode(',', $this->from);
         }
 
-        foreach ($this->where as $index => $where) {
+        if (isset($this->where)) {
+            foreach ($this->where as $index => $where) {
 
-            if (!is_string($where['column'])) {
-                throw new \OtherCode\Database\Exceptions\QueryException("The column field is not a string in where clause.");
+                if (!is_string($where['column'])) {
+                    throw new \OtherCode\Database\Exceptions\QueryException("The column field is not a string in where clause.");
+                }
+
+                if (!is_string($where['operator']) || !in_array($where['operator'], $this->operators)) {
+                    throw new \OtherCode\Database\Exceptions\QueryException("Invalid operator in where clause.");
+                }
+
+                if (gettype($where['value']) == 'string' && stripos($where['value'], ':') === false) {
+                    $where['value'] = '"' . $where['value'] . '"';
+                }
+
+                $sentence = ($index == 0) ? "WHERE " : "AND ";
+                $sql[] = $sentence . implode(" ", $where);
+
             }
-
-            if (!is_string($where['operator']) || !in_array($where['operator'], $this->operators)) {
-                throw new \OtherCode\Database\Exceptions\QueryException("Invalid operator in where clause.");
-            }
-
-            if (gettype($where['value']) == 'string' && stripos($where['value'],':') === false) {
-                $where['value'] = '"' . $where['value'] . '"';
-            }
-
-            $sentence = ($index == 0) ? "WHERE " : "AND ";
-            $sql[] = $sentence . implode(" ", $where);
-
         }
 
         return implode(" ", $sql);
