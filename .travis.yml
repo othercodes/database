@@ -25,5 +25,8 @@ before_script:
   - psql -d test -a -f examples/sql/pgsql.sql
   - sqlite3 examples/test.sqlite < examples/sql/sqlite.sql
 
+install:
+- composer install
+
 script:
-  - phpunit -c ./phpunit.xml
+  - vendor/bin/phpunit -c ./phpunit.xml
