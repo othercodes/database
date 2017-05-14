@@ -115,6 +115,7 @@ class Database
      * Execute the current query
      * @param null|array $params
      * @throws \OtherCode\Database\Exceptions\DatabaseException
+     * @return $this
      */
     public function execute($params = null)
     {
@@ -129,6 +130,8 @@ class Database
 
             throw new \OtherCode\Database\Exceptions\DatabaseException("Execute error: " . $e->getMessage(), $e->getCode());
         }
+
+        return $this;
     }
 
     /**
