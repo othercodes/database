@@ -53,6 +53,18 @@ class Query
     private $delete;
 
     /**
+     * Insert values
+     * @var array
+     */
+    private $insert;
+
+    /**
+     * Delete values
+     * @var array
+     */
+    private $replace;
+
+    /**
      * From values
      * @var array
      */
@@ -62,19 +74,19 @@ class Query
      * Where conditions
      * @var array
      */
-    private $where;
-
-    /**
-     * Groups values
-     * @var array
-     */
-    private $groups;
+    private $where = array();
 
     /**
      * Order by values
      * @var array
      */
-    private $orders;
+    private $order = array();
+
+    /**
+     * Groups values
+     * @var array
+     */
+    private $group;
 
     /**
      * Limit values
@@ -83,13 +95,28 @@ class Query
     private $limit;
 
     /**
-     * Add a select clause
+     * Add SELECT clause
      * @param array $columns
      * @return $this
      */
-    public function select(Array $columns = array('*'))
+    public function select(array $columns = array('*'))
     {
         $this->select = $columns;
+        return $this;
+    }
+
+    /**
+     * Add UPDATE clause
+     * @param string $table
+     * @param array $columns
+     * @return $this
+     */
+    public function update($table, array $columns)
+    {
+        $this->update = array(
+            'table' => $table,
+            'values' => $columns
+        );
         return $this;
     }
 
@@ -105,17 +132,37 @@ class Query
     }
 
     /**
-     * Add an update clause
-     * @param array $values
+     * Add INSERT clause
+     * @param string $table
+     * @param array $columns
      * @return $this
      */
-    public function update(array $values)
+    public function insert($table, array $columns)
     {
-        $this->update = $values;
+        $this->insert = array(
+            'table' => $table,
+            'values' => $columns
+        );
         return $this;
     }
 
     /**
+     * Add REPLACE INTO clause
+     * @param string $table
+     * @param array $columns
+     * @return $this
+     */
+    public function replace($table, array $columns)
+    {
+        $this->replace = array(
+            'table' => $table,
+            'values' => $columns
+        );
+        return $this;
+    }
+
+    /**
+     * Add FROM clause
      * @param array|string $tables
      * @return $this
      */
@@ -130,24 +177,61 @@ class Query
     }
 
     /**
-     * Add a where clause
+     * Add a new WHERE/AND clause
      * @param $column
      * @param $operator
      * @param $value
+     * @param $quoted
      * @return $this
      */
-    public function where($column, $operator, $value)
+    public function where($column, $operator, $value, $quoted = false)
     {
         $this->where[] = array(
             'column' => $column,
             'operator' => $operator,
             'value' => $value,
+            'quoted' => $quoted
         );
         return $this;
     }
 
     /**
-     * Compile each clause of the query to SQL
+     * Add GROUP BY clause
+     * @param string $field
+     * @return $this
+     */
+    public function groupBy($field)
+    {
+        $this->group = $field;
+        return $this;
+    }
+
+    /**
+     * Add ORDER BY clause
+     * @param string $field
+     * @param string $order
+     * @return $this
+     */
+    public function orderBy($field, $order = 'DESC')
+    {
+        $this->order[] = array($field, $order);
+        return $this;
+    }
+
+    /**
+     * Set the LIMIT clause
+     * @param string $limit
+     * @param null $offset
+     * @return $this
+     */
+    public function limit($limit = '1000', $offset = null)
+    {
+        $this->limit = array($offset, $limit);
+        return $this;
+    }
+
+    /**
+     * Compile the SQL query
      * @return string
      * @throws \OtherCode\Database\Exceptions\QueryException
      */
@@ -155,44 +239,102 @@ class Query
     {
         $sql = array();
 
-        if (count($this->select) > 0) {
-            $sql[] = "SELECT " . implode(',', $this->select);
+        if (isset($this->select)) {
+            $sql[] = 'SELECT ' . implode(',', $this->select);
         }
 
-        if (count($this->update) > 0) {
-            $sql[] = "UPDATE " . implode(",", $this->update);
+        if (isset($this->update)) {
+            $sql[] = 'UPDATE';
+            $sql[] = $this->update['table'];
+            $sql[] = 'SET';
+
+            $blocks = array();
+            foreach ($this->update['values'] as $key => $value) {
+                $blocks[] = $key . ' = ' . $value;
+            }
+
+            $sql[] = implode(',', $blocks);
         }
 
-        if ($this->delete) {
+        if (isset($this->delete)) {
             $sql[] = "DELETE ";
         }
 
-        if (count($this->select) > 0) {
-            $sql[] = "FROM " . implode(',', $this->from);
-        }
+        if (isset($this->insert)) {
+            $sql[] = 'INSERT INTO';
+            $sql[] = $this->insert['table'];
 
-        if (isset($this->where)) {
-            foreach ($this->where as $index => $where) {
+            $fields = array();
+            $replaces = array();
 
-                if (!is_string($where['column'])) {
-                    throw new \OtherCode\Database\Exceptions\QueryException("The column field is not a string in where clause.");
-                }
-
-                if (!is_string($where['operator']) || !in_array($where['operator'], $this->operators)) {
-                    throw new \OtherCode\Database\Exceptions\QueryException("Invalid operator in where clause.");
-                }
-
-                if (gettype($where['value']) == 'string' && stripos($where['value'], ':') === false) {
-                    $where['value'] = '"' . $where['value'] . '"';
-                }
-
-                $sentence = ($index == 0) ? "WHERE " : "AND ";
-                $sql[] = $sentence . implode(" ", $where);
-
+            foreach ($this->insert['values'] as $key => $value) {
+                $fields[] = '`' . $key . '`';
+                $replaces[] = $value;
             }
+
+            $sql[] = '(' . implode(',', $fields) . ')';
+            $sql[] = (count($this->insert['values']) > 1) ? 'VALUES' : 'VALUE';
+            $sql[] = '(' . implode(',', $replaces) . ')';
         }
 
-        return implode(" ", $sql);
+        if (isset($this->replace)) {
+            $sql[] = 'REPLACE INTO';
+            $sql[] = $this->replace['table'];
+
+            $fields = array();
+            $replaces = array();
+
+            foreach ($this->replace['values'] as $key => $value) {
+                $fields[] = '`' . $key . '`';
+                $replaces[] = $value;
+            }
+
+            $sql[] = '(' . implode(',', $fields) . ')';
+            $sql[] = (count($this->replace['values']) > 1) ? 'VALUES' : 'VALUE';
+            $sql[] = '(' . implode(',', $replaces) . ')';
+        }
+
+        if (isset($this->from)) {
+            $sql[] = 'FROM ' . implode(',', $this->from);
+        }
+
+        foreach ($this->where as $index => $where) {
+
+            if (!is_string($where['column'])) {
+                throw new \OtherCode\Database\Exceptions\QueryException("The column field is not a string in where clause.");
+            }
+
+            if (!is_string($where['operator']) || !in_array($where['operator'], $this->operators)) {
+                throw new \OtherCode\Database\Exceptions\QueryException("Invalid operator in where clause.");
+            }
+
+            if (gettype($where['value']) == 'string' && $where['quoted'] === true) {
+                $where['value'] = '"' . $where['value'] . '"';
+            }
+
+            $sentence = ($index == 0) ? "WHERE " : "AND ";
+            $sql[] = $sentence . implode(" ", $where);
+
+        }
+
+        if (isset($this->group)) {
+            $sql[] = 'GROUP BY ' . $this->group;
+        }
+
+        foreach ($this->order as $index => $order) {
+
+            if (!in_array($order[1], array('ASC', 'DESC'))) {
+                throw new \OtherCode\Database\Exceptions\QueryException('Invalid order by value, must be ASC or DESC.');
+            }
+
+            $sql[] = 'ORDER BY ' . implode(" ", $order);
+        }
+
+        if (isset($this->limit)) {
+            $sql[] = 'LIMIT ' . implode(" ", $this->limit);
+        }
+
+        return trim(implode(" ", $sql));
     }
 
     /**
@@ -203,7 +345,9 @@ class Query
     {
         try {
             return $this->compile();
+
         } catch (\Exception $e) {
+
             return $e->getMessage();
         }
     }
