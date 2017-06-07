@@ -33,6 +33,19 @@ class Database
     protected $stmt;
 
     /**
+     * Database constructor.
+     * @param array $configs
+     */
+    public function __construct(array $configs = null)
+    {
+        if (isset($configs)) {
+            foreach ($configs as $name => $config) {
+                $this->addConnection($config, $name);
+            }
+        }
+    }
+
+    /**
      * Create a new PDO connection
      * @param array $config
      * @param string $name
@@ -65,7 +78,7 @@ class Database
      */
     public function getConnection($name = 'default')
     {
-        if(array_key_exists($name, $this->connections)){
+        if (array_key_exists($name, $this->connections)) {
             return $this->connections[$name];
         }
         return null;
