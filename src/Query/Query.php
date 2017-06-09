@@ -312,6 +312,8 @@ class Query
                 $where['value'] = '"' . $where['value'] . '"';
             }
 
+            unset($where['quoted']);
+
             $sentence = ($index == 0) ? "WHERE " : "AND ";
             $sql[] = $sentence . implode(" ", $where);
 
