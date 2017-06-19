@@ -6,21 +6,8 @@ namespace OtherCode\Database\Query;
  * Class Query
  * @package OtherCode\Database\Query
  */
-class Query
+abstract class Query
 {
-    /**
-     * Allowed clauses
-     * @var array
-     */
-    protected $statements = array(
-        'SELECT',
-        'INSERT',
-        'UPDATE',
-        'DELETE',
-        'FROM',
-        'WHERE'
-    );
-
     /**
      * Allowed operators
      * @var array
@@ -32,6 +19,14 @@ class Query
         'rlike', 'regexp', 'not regexp',
         '~', '~*', '!~', '!~*', 'similar to',
         'not similar to'
+    );
+
+    protected $dmlBlock = array(
+        'DELETE',
+        'INSERT',
+        'REPLACE',
+        'SELECT',
+        'UPDATE',
     );
 
     /**
@@ -337,6 +332,39 @@ class Query
         }
 
         return trim(implode(" ", $sql));
+    }
+
+    /**
+     * Add quotes to text
+     * @param string|array $text
+     * @param bool $escape
+     * @return array|string
+     */
+    public function quote($text, $escape = false)
+    {
+        if (is_array($text)) {
+            foreach ($text as $key => $value) {
+                $text[$key] = $this->quote($value, $escape);
+            }
+
+            return $text;
+        }
+
+        return '\'' . ($escape ? $this->escape($text) : $text) . '\'';
+    }
+
+    /**
+     * Escape string
+     * @param mixed $text
+     * @return string
+     */
+    public function escape($text)
+    {
+        if (is_int($text) || is_float($text)) {
+            return $text;
+        }
+
+        return addcslashes(str_replace("'", "''", $text), "\000\n\r\\\032");
     }
 
     /**

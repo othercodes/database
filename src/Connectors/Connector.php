@@ -28,7 +28,7 @@ abstract class Connector
      * @throws \PDOException
      * @throws \Othercode\Database\Exceptions\ConnectionException
      */
-    public function createConnection($dsn, Array $config, Array $options)
+    public function createConnection($dsn, array $config, array $options)
     {
 
         $pdo = null;
