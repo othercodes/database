@@ -16,13 +16,23 @@ class Database
 
     /**
      * List of available connections
-     * @var array
+     * @var \PDO[]
      */
     private $connections = array();
 
     /**
+     * Connectors list
+     * @var array
+     */
+    protected $connectors = array(
+        'mysql' => 'Mysql',
+        'pgsql' => 'Postgres',
+        'sqlite' => 'SQLite'
+    );
+
+    /**
      * The query to be executed
-     * @var \OtherCode\Database\Query\Query
+     * @var \OtherCode\Database\Query
      */
     protected $query;
 
@@ -52,19 +62,13 @@ class Database
      * @return $this
      * @throws \OtherCode\Database\Exceptions\ConnectionException
      */
-    public function addConnection(Array $config, $name = 'default')
+    public function addConnection(array $config, $name = 'default')
     {
-        $connectors = array(
-            'mysql' => 'Mysql',
-            'pgsql' => 'Postgres',
-            'sqlite' => 'SQLite'
-        );
-
-        if (!isset($config['driver']) || !array_key_exists($config['driver'], $connectors)) {
+        if (!isset($config['driver']) || !array_key_exists($config['driver'], $this->connectors)) {
             throw new \OtherCode\Database\Exceptions\ConnectionException("The selected driver is not valid.");
         }
 
-        $connector = "OtherCode\\Database\\Connectors\\" . $connectors[$config['driver']] . 'Connector';
+        $connector = "OtherCode\\Database\\Connectors\\" . $this->connectors[$config['driver']] . 'Connector';
         $connection = new $connector();
 
         $this->connections[$name] = $connection->connect($config);
@@ -87,25 +91,24 @@ class Database
     /**
      * Return a new Query instance
      * @param boolean $new
-     * @return Query\Query
+     * @return \OtherCode\Database\Query
      */
-    public function getQuery($new = false)
+    public function getQuery($new = true)
     {
-        if ($this->query !== null && !$new) {
+        if (isset($this->query) && $new === false) {
             return $this->query;
         }
-
-        return new \OtherCode\Database\Query\Query();
+        return new \OtherCode\Database\Query();
     }
 
     /**
      * Set and execute a query
-     * @param \OtherCode\Database\Query\Query|string $query
+     * @param \OtherCode\Database\Query|string $query
      * @return $this
      */
     public function setQuery($query)
     {
-        if (is_string($query) || $query instanceof \OtherCode\Database\Query\Query) {
+        if ($query instanceof \OtherCode\Database\Query) {
             $this->query = $query;
         }
         return $this;
@@ -132,11 +135,11 @@ class Database
      */
     public function execute($params = null)
     {
-        $sql = $this->query instanceof \OtherCode\Database\Query\Query ? $this->query->compile() : $this->query;
-
         try {
 
-            $this->stmt = $this->connections[$this->defaultConnection]->prepare($sql);
+            $this->connections[$this->defaultConnection]->getAttribute(\PDO::ATTR_DRIVER_NAME);
+
+            $this->stmt = $this->connections[$this->defaultConnection]->prepare($this->query->compile());
             $this->stmt->execute($params);
 
         } catch (\PDOException $e) {

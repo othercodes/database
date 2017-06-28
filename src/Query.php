@@ -1,12 +1,12 @@
 <?php
 
-namespace OtherCode\Database\Query;
+namespace OtherCode\Database;
 
 /**
  * Class Query
- * @package OtherCode\Database\Query
+ * @package OtherCode\Database
  */
-abstract class Query
+class Query
 {
     /**
      * Allowed operators
@@ -21,6 +21,10 @@ abstract class Query
         'not similar to'
     );
 
+    /**
+     * Default DML blocks to compile
+     * @var array
+     */
     protected $dmlBlock = array(
         'DELETE',
         'INSERT',
@@ -33,61 +37,61 @@ abstract class Query
      * Select values
      * @var array
      */
-    private $select;
+    protected $select;
 
     /**
      * Update values
      * @var array
      */
-    private $update;
+    protected $update;
 
     /**
      * Delete values
      * @var array
      */
-    private $delete;
+    protected $delete;
 
     /**
      * Insert values
      * @var array
      */
-    private $insert;
-
-    /**
-     * Delete values
-     * @var array
-     */
-    private $replace;
+    protected $insert;
 
     /**
      * From values
      * @var array
      */
-    private $from;
+    protected $from;
 
     /**
      * Where conditions
      * @var array
      */
-    private $where = array();
+    protected $where = array();
 
     /**
      * Order by values
      * @var array
      */
-    private $order = array();
+    protected $order = array();
 
     /**
      * Groups values
      * @var array
      */
-    private $group;
+    protected $group;
 
     /**
      * Limit values
      * @var array
      */
-    private $limit;
+    protected $limit;
+
+    /**
+     * Compiler system for the query
+     * @var \OtherCode\Database\Query\Compilers\Compiler
+     */
+    public $compiler;
 
     /**
      * Add SELECT clause
@@ -117,10 +121,10 @@ abstract class Query
 
     /**
      * Add a delete clause
-     * @param null $id
+     * @param array $id
      * @return $this
      */
-    public function delete($id = null)
+    public function delete(array $id)
     {
         $this->delete = $id;
         return $this;
@@ -173,10 +177,10 @@ abstract class Query
 
     /**
      * Add a new WHERE/AND clause
-     * @param $column
-     * @param $operator
-     * @param $value
-     * @param $quoted
+     * @param string $column
+     * @param string $operator
+     * @param string $value
+     * @param boolean $quoted
      * @return $this
      */
     public function where($column, $operator, $value, $quoted = false)
