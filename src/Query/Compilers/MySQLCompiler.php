@@ -36,7 +36,12 @@ class MySQLCompiler extends Compiler
         'limit',
     );
 
-    public function compileReplace($replace)
+    /**
+     * Compile REPLACE statement
+     * @param array $replace
+     * @return string
+     */
+    public function compileReplace(array $replace)
     {
         $block = array();
 

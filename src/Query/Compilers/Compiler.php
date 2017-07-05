@@ -87,10 +87,10 @@ abstract class Compiler
 
     /**
      * Compile the INSERT statement
-     * @param $insert
+     * @param array $insert
      * @return string
      */
-    public function compileInsert($insert)
+    public function compileInsert(array $insert)
     {
         $block = array();
         $block[] = 'INSERT INTO ' . $insert['table'];
