@@ -1,7 +1,12 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="database">
-            <directory>tests</directory>
+        <testsuite name="Connection">
+            <file>tests/ConnectionTest.php</file>
+        </testsuite>
+        <testsuite name="Queries">
+            <file>tests/QueryMySQLTest.php</file>
+            <file>tests/QueryPostgresTest.php</file>
+            <file>tests/QuerySQLiteTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

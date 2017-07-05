@@ -10,7 +10,7 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
         return $db;
     }
 
-    public function testInstantiationBatch()
+    public function sstestInstantiationBatch()
     {
         $db = new \OtherCode\Database\Database(array(
             'mysql' => array(
@@ -48,7 +48,7 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
             'host' => 'localhost',
             'dbname' => 'test',
             'username' => 'root',
-            'password' => ''
+            'password' => 'root'
         ), 'mysql');
 
         $this->assertInstanceOf('\PDO', $db->getConnection('mysql'));
@@ -59,7 +59,7 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testInstantiation
      */
-    public function testPostgreSQLConnection(\OtherCode\Database\Database $db)
+    public function sstestPostgreSQLConnection(\OtherCode\Database\Database $db)
     {
         $db->addConnection(array(
             'driver' => 'pgsql',
@@ -77,7 +77,7 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testInstantiation
      */
-    public function testSQLiteConnection(\OtherCode\Database\Database $db)
+    public function sstestSQLiteConnection(\OtherCode\Database\Database $db)
     {
         $db->addConnection(array(
             'driver' => 'sqlite',

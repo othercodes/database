@@ -1,16 +1,16 @@
 <?php
 
-class QueryMySQLTest extends \PHPUnit\Framework\TestCase
+class QueryPostgresTest extends \PHPUnit\Framework\TestCase
 {
 
-    public function testMySQLConnection()
+    public function testPostgresConnection()
     {
         $db = new \OtherCode\Database\Database(array(
                 'default' => array(
-                    'driver' => 'mysql',
+                    'driver' => 'pgsql',
                     'host' => 'localhost',
                     'dbname' => 'test',
-                    'username' => 'root',
+                    'username' => 'postgres',
                     'password' => ''
                 ))
         );
@@ -22,7 +22,7 @@ class QueryMySQLTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @depends testMySQLConnection
+     * @depends testPostgresConnection
      */
     public function testSelectAll(\OtherCode\Database\Database $db)
     {
@@ -39,7 +39,7 @@ class QueryMySQLTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @depends testMySQLConnection
+     * @depends testPostgresConnection
      */
     public function testSelectWhere(\OtherCode\Database\Database $db)
     {

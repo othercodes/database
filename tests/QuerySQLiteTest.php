@@ -1,17 +1,14 @@
 <?php
 
-class QueryMySQLTest extends \PHPUnit\Framework\TestCase
+class QuerySQLiteTest extends \PHPUnit\Framework\TestCase
 {
 
-    public function testMySQLConnection()
+    public function testSQLiteConnection()
     {
         $db = new \OtherCode\Database\Database(array(
                 'default' => array(
-                    'driver' => 'mysql',
-                    'host' => 'localhost',
-                    'dbname' => 'test',
-                    'username' => 'root',
-                    'password' => ''
+                    'driver' => 'sqlite',
+                    'dbname' => 'examples/test.sqlite',
                 ))
         );
 
@@ -22,7 +19,7 @@ class QueryMySQLTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @depends testMySQLConnection
+     * @depends testSQLiteConnection
      */
     public function testSelectAll(\OtherCode\Database\Database $db)
     {
@@ -39,7 +36,7 @@ class QueryMySQLTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @depends testMySQLConnection
+     * @depends testSQLiteConnection
      */
     public function testSelectWhere(\OtherCode\Database\Database $db)
     {
