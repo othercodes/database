@@ -52,6 +52,8 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
         ), 'mysql');
 
         $this->assertInstanceOf('\PDO', $db->getConnection('mysql'));
+
+        return $db;
     }
 
     /**
@@ -68,6 +70,8 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
         ), 'pgsql');
 
         $this->assertInstanceOf('\PDO', $db->getConnection('pgsql'));
+
+        return $db;
     }
 
     /**
@@ -81,5 +85,7 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
         ), 'sqlite');
 
         $this->assertInstanceOf('\PDO', $db->getConnection('sqlite'));
+
+        return $db;
     }
 }
