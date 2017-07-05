@@ -48,7 +48,7 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
             'host' => 'localhost',
             'dbname' => 'test',
             'username' => 'root',
-            'password' => 'root'
+            'password' => ''
         ), 'mysql');
 
         $this->assertInstanceOf('\PDO', $db->getConnection('mysql'));
