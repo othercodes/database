@@ -6,7 +6,7 @@ namespace OtherCode\Database\Connectors;
  * Class MysqlConnector
  * @package OtherCode\Database\Connectors
  */
-class MysqlConnector extends Connector
+class MySQLConnector extends Connector
 {
 
     /**

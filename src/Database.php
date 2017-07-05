@@ -21,11 +21,17 @@ class Database
     private $connections = array();
 
     /**
+     * Compiler system for the query
+     * @var \OtherCode\Database\Query\Compilers\Compiler[]
+     */
+    public $compilers = array();
+
+    /**
      * Connectors list
      * @var array
      */
     protected $connectors = array(
-        'mysql' => 'Mysql',
+        'mysql' => 'MySQL',
         'pgsql' => 'Postgres',
         'sqlite' => 'SQLite'
     );
@@ -68,10 +74,14 @@ class Database
             throw new \OtherCode\Database\Exceptions\ConnectionException("The selected driver is not valid.");
         }
 
-        $connector = "OtherCode\\Database\\Connectors\\" . $this->connectors[$config['driver']] . 'Connector';
-        $connection = new $connector();
+        $connector = "OtherCode\\Database\\Connectors\\" . $this->connectors[$config['driver']] . "Connector";
+        $this->connections[$name] = (new $connector())->connect($config);
 
-        $this->connections[$name] = $connection->connect($config);
+        if (!array_key_exists($this->connectors[$config['driver']], $this->compilers)) {
+            $compiler = "OtherCode\\Database\\Query\\Compilers\\" . $this->connectors[$config['driver']] . "Compiler";
+            $this->compilers[$this->connectors[$config['driver']]] = new $compiler();
+        }
+
         return $this;
     }
 
@@ -86,6 +96,17 @@ class Database
             return $this->connections[$name];
         }
         return null;
+    }
+
+    /**
+     * Return the compiler for a connection
+     * @param string $name
+     * @return Query\Compilers\Compiler
+     */
+    public function getCompiler($name = 'default')
+    {
+        $driver = $this->getConnection($name)->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        return $this->compilers[$this->connectors[$driver]];
     }
 
     /**
@@ -130,16 +151,20 @@ class Database
     /**
      * Execute the current query
      * @param null|array $params
+     * @param null|string $query
      * @throws \OtherCode\Database\Exceptions\DatabaseException
      * @return $this
      */
-    public function execute($params = null)
+    public function execute($params = null, $query = null)
     {
         try {
 
-            $this->connections[$this->defaultConnection]->getAttribute(\PDO::ATTR_DRIVER_NAME);
 
-            $this->stmt = $this->connections[$this->defaultConnection]->prepare($this->query->compile());
+            if (!isset($query)) {
+                $query = $this->getCompiler()->compile($this->query);
+            }
+
+            $this->stmt = $this->connections[$this->defaultConnection]->prepare($query);
             $this->stmt->execute($params);
 
         } catch (\PDOException $e) {
