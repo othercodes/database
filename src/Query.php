@@ -46,6 +46,12 @@ class Query
     protected $where = array();
 
     /**
+     * In statement
+     * @var array
+     */
+    protected $in = array();
+
+    /**
      * Order by values
      * @var array
      */
@@ -149,17 +155,25 @@ class Query
      * Add a new WHERE/AND clause
      * @param string $column
      * @param string $operator
-     * @param string $value
+     * @param string|array $value
      * @param boolean $quoted
      * @param boolean $escape
      * @return $this
      */
     public function where($column, $operator, $value, $quoted = false, $escape = false)
     {
+        if (is_array($value)) {
+            foreach ($value as $index => $item) {
+                $value[$index] = ($quoted ? $this->quote($item, $escape) : $item);
+            }
+        } else {
+            $value = ($quoted ? $this->quote($value, $escape) : $value);
+        }
+
         $this->where[] = array(
             'column' => $column,
             'operator' => $operator,
-            'value' => ($quoted ? $this->quote($value, $escape) : $value)
+            'value' => $value
         );
         return $this;
     }

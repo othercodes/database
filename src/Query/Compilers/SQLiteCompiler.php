@@ -16,7 +16,7 @@ class SQLiteCompiler extends Compiler
     protected $operators = array(
         '=', '<', '>', '<=', '>=', '<>', '!=',
         'like', 'not like', 'between', 'ilike',
-        '&', '|', '<<', '>>',
+        '&', '|', '<<', '>>', 'in',
     );
 
     /**

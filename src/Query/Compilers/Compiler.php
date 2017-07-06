@@ -140,7 +140,13 @@ abstract class Compiler
             }
 
             $sentence = ($index == 0) ? "WHERE " : "AND ";
-            $block[] = $sentence . implode(" ", $chunk);
+
+            if (is_array($chunk['value'])) {
+                $chunk['value'] = '(' . implode(", ", $chunk['value']) . ')';
+            }
+
+            $block[] = $sentence . implode(' ', $chunk);
+
         }
 
         return implode(' ', $block);

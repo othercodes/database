@@ -15,7 +15,7 @@ class MySQLCompiler extends Compiler
      */
     protected $operators = array(
         '=', '<', '>', '<=', '>=', '<>', '!=',
-        'like', 'not like', 'between', 'not',
+        'like', 'not like', 'between', 'not', 'in',
         '&', '|', '<<', '>>', '%', 'mod', 'is not',
     );
 
