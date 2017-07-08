@@ -26,7 +26,7 @@ before_script:
   - psql -U postgres -c "CREATE DATABASE test;"
   - psql -U postgres -d test -a -f examples/sql/pgsql.sql
   - psql -U postgres -c "CREATE USER test WITH PASSWORD '';"
-  - psql -U postgres -d test -c "ALTER TABLE test OWNER TO test;"
+  - psql -U postgres -d test -c "ALTER TABLE ts_users OWNER TO test;"
   - touch examples/test.sqlite
   - sqlite3 examples/test.sqlite < examples/sql/sqlite.sql
 
