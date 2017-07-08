@@ -8,10 +8,11 @@
         <testsuite name="Connection">
             <file>tests/ConnectionTest.php</file>
         </testsuite>
-        <testsuite name="Queries">
-            <file>tests/QueryMySQLTest.php</file>
-            <file>tests/QueryPostgresTest.php</file>
-            <file>tests/QuerySQLiteTest.php</file>
+        <testsuite name="Query">
+            <file>tests/QueryTest.php</file>
+        </testsuite>
+        <testsuite name="Compile">
+            <file>tests/CompileTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

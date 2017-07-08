@@ -12,7 +12,7 @@ class Database
      * Default connect to launch the queries
      * @var string
      */
-    private $defaultConnection = 'default';
+    private $defaultConnection;
 
     /**
      * List of available connections
@@ -24,7 +24,7 @@ class Database
      * Compiler system for the query
      * @var \OtherCode\Database\Query\Compilers\Compiler[]
      */
-    public $compilers = array();
+    private $compilers = array();
 
     /**
      * Connectors list
@@ -55,8 +55,9 @@ class Database
     public function __construct(array $configs = null)
     {
         if (isset($configs)) {
+            $counter = 0;
             foreach ($configs as $name => $config) {
-                $this->addConnection($config, $name);
+                $this->addConnection($config, $name, $counter++ === 0 ? true : false);
             }
         }
     }
@@ -65,10 +66,11 @@ class Database
      * Create a new PDO connection
      * @param array $config
      * @param string $name
+     * @param bool $default
      * @return $this
      * @throws \OtherCode\Database\Exceptions\ConnectionException
      */
-    public function addConnection(array $config, $name = 'default')
+    public function addConnection(array $config, $name, $default = false)
     {
         if (!isset($config['driver']) || !array_key_exists($config['driver'], $this->connectors)) {
             throw new \OtherCode\Database\Exceptions\ConnectionException("The selected driver is not valid.");
@@ -82,16 +84,24 @@ class Database
             $this->compilers[$this->connectors[$config['driver']]] = new $compiler();
         }
 
+        if ($default === true) {
+            $this->defaultConnection = $name;
+        }
+
         return $this;
     }
 
     /**
      * Return a connection
-     * @param string $name
+     * @param string|null $name
      * @return \PDO|null
      */
-    public function getConnection($name = 'default')
+    public function getConnection($name = null)
     {
+        if (empty($name)) {
+            return $this->connections[$this->defaultConnection];
+        }
+
         if (array_key_exists($name, $this->connections)) {
             return $this->connections[$name];
         }
@@ -103,10 +113,11 @@ class Database
      * @param string $name
      * @return Query\Compilers\Compiler
      */
-    public function getCompiler($name = 'default')
+    public function getCompiler($name = null)
     {
         $driver = $this->getConnection($name)->getAttribute(\PDO::ATTR_DRIVER_NAME);
         return $this->compilers[$this->connectors[$driver]];
+
     }
 
     /**
@@ -137,14 +148,17 @@ class Database
 
     /**
      * Set the new default connection
-     * @param $connection
+     * @param string $connection
+     * @throws \OtherCode\Database\Exceptions\ConnectionException
      * @return $this
      */
     public function on($connection)
     {
-        if (array_key_exists($connection, $this->connections)) {
-            $this->defaultConnection = $connection;
+        if (!array_key_exists($connection, $this->connections)) {
+            throw new \OtherCode\Database\Exceptions\ConnectionException("The selected connection is not available.");
         }
+
+        $this->defaultConnection = $connection;
         return $this;
     }
 
@@ -158,7 +172,6 @@ class Database
     public function execute($params = null, $query = null)
     {
         try {
-
 
             if (!isset($query)) {
                 $query = $this->getCompiler()->compile($this->query);

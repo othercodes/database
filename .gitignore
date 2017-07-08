@@ -2,6 +2,7 @@ nbproject/
 coverage/
 .idea/
 vendor/
+examples/*.sqlite
 coverage.xml
 composer.lock
 
