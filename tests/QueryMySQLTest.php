@@ -10,7 +10,7 @@ class QueryMySQLTest extends \PHPUnit\Framework\TestCase
                     'driver' => 'mysql',
                     'host' => 'localhost',
                     'dbname' => 'test',
-                    'username' => 'root',
+                    'username' => 'test',
                     'password' => ''
                 ))
         );

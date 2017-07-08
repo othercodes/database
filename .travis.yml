@@ -19,10 +19,15 @@ services:
   - postgresql
 
 before_script:
-  - mysql -u root -e "create database IF NOT EXISTS test;"
-  - mysql -u root test < examples/sql/mysql.sql -u root
-  - psql -c 'create database test;' -U postgres
-  - psql -d test -a -f examples/sql/pgsql.sql
+  - mysql -u root -e "CREATE DATABASE IF NOT EXISTS test;"
+  - mysql -u root test < examples/sql/mysql.sql
+  - mysql -u root -e "CREATE USER 'test'@'localhost' IDENTIFIED BY '';"
+  - mysql -u root -e "GRANT ALL ON test.* TO 'test'@'localhost';"
+  - psql -U postgres -c "CREATE DATABASE test;"
+  - psql -U postgres -d test -a -f examples/sql/pgsql.sql
+  - psql -U postgres -c "CREATE USER test WITH PASSWORD '';"
+  - psql -U postgres -d test -c "ALTER TABLE test OWNER TO test;"
+  - touch examples/test.sqlite
   - sqlite3 examples/test.sqlite < examples/sql/sqlite.sql
 
 install:
@@ -30,3 +35,7 @@ install:
 
 script:
   - ./vendor/bin/phpunit -c ./phpunit.xml
+  - ./vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+      - bash <(curl -s https://codecov.io/bash)

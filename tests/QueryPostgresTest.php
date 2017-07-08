@@ -10,7 +10,7 @@ class QueryPostgresTest extends \PHPUnit\Framework\TestCase
                     'driver' => 'pgsql',
                     'host' => 'localhost',
                     'dbname' => 'test',
-                    'username' => 'postgres',
+                    'username' => 'test',
                     'password' => ''
                 ))
         );

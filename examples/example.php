@@ -10,8 +10,8 @@ try {
         'driver' => 'mysql',
         'host' => 'localhost',
         'dbname' => 'test',
-        'username' => 'root',
-        'password' => 'root'
+        'username' => 'test',
+        'password' => ''
     ));
 
     $query = $db->getQuery();

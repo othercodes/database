@@ -1,5 +1,7 @@
 nbproject/
+coverage/
 .idea/
 vendor/
+coverage.xml
 composer.lock
 

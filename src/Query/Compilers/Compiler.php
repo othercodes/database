@@ -9,6 +9,12 @@ namespace OtherCode\Database\Query\Compilers;
 abstract class Compiler
 {
     /**
+     * The default word wrapper
+     * @var string
+     */
+    protected $wordWrapper = '`';
+
+    /**
      * Allowed operators
      * @var array
      */
@@ -48,6 +54,18 @@ abstract class Compiler
         }
 
         return trim(implode(" ", $sql));
+    }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function wrap($value)
+    {
+        if ($value !== '*') {
+            return '"' . str_replace('"', '""', $value) . '"';
+        }
+        return $value;
     }
 
     /** Compile the SELECT statement

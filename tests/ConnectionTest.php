@@ -10,21 +10,21 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
         return $db;
     }
 
-    public function sstestInstantiationBatch()
+    public function testInstantiationBatch()
     {
         $db = new \OtherCode\Database\Database(array(
             'mysql' => array(
                 'driver' => 'mysql',
                 'host' => 'localhost',
                 'dbname' => 'test',
-                'username' => 'root',
+                'username' => 'test',
                 'password' => ''
             ),
             'pgsql' => array(
                 'driver' => 'pgsql',
                 'host' => 'localhost',
                 'dbname' => 'test',
-                'username' => 'postgres',
+                'username' => 'test',
                 'password' => ''
             ),
             'sqlite' => array(
@@ -47,7 +47,7 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
             'driver' => 'mysql',
             'host' => 'localhost',
             'dbname' => 'test',
-            'username' => 'root',
+            'username' => 'test',
             'password' => ''
         ), 'mysql');
 
@@ -59,13 +59,13 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testInstantiation
      */
-    public function sstestPostgreSQLConnection(\OtherCode\Database\Database $db)
+    public function testPostgreSQLConnection(\OtherCode\Database\Database $db)
     {
         $db->addConnection(array(
             'driver' => 'pgsql',
             'host' => 'localhost',
             'dbname' => 'test',
-            'username' => 'postgres',
+            'username' => 'test',
             'password' => ''
         ), 'pgsql');
 
@@ -77,7 +77,7 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testInstantiation
      */
-    public function sstestSQLiteConnection(\OtherCode\Database\Database $db)
+    public function testSQLiteConnection(\OtherCode\Database\Database $db)
     {
         $db->addConnection(array(
             'driver' => 'sqlite',
