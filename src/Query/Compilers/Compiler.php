@@ -34,6 +34,18 @@ abstract class Compiler
     protected $dmlBlocks = array();
 
     /**
+     * @param $value
+     * @return string
+     */
+    public function wrap($value)
+    {
+        if ($value !== '*') {
+            return '"' . str_replace('"', '""', $value) . '"';
+        }
+        return $value;
+    }
+
+    /**
      * Compile the SQL query
      * @return string
      * @throws \OtherCode\Database\Exceptions\QueryException
@@ -54,18 +66,6 @@ abstract class Compiler
         }
 
         return trim(implode(" ", $sql));
-    }
-
-    /**
-     * @param $value
-     * @return string
-     */
-    public function wrap($value)
-    {
-        if ($value !== '*') {
-            return '"' . str_replace('"', '""', $value) . '"';
-        }
-        return $value;
     }
 
     /** Compile the SELECT statement

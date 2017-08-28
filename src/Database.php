@@ -284,7 +284,7 @@ class Database
     }
 
     /**
-     * Returna single record as indexed array
+     * Return single record as indexed array
      * @return array|null
      */
     public function loadIndexedRow()
