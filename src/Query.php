@@ -156,25 +156,19 @@ class Query
      * @param string $column
      * @param string $operator
      * @param string|array $value
-     * @param boolean $quoted
-     * @param boolean $escape
+     * @param string $nexus
      * @return $this
      */
-    public function where($column, $operator, $value, $quoted = false, $escape = false)
+    public function where($column, $operator, $value, $nexus = 'and')
     {
-        if (is_array($value)) {
-            foreach ($value as $index => $item) {
-                $value[$index] = ($quoted ? $this->quote($item, $escape) : $item);
-            }
-        } else {
-            $value = ($quoted ? $this->quote($value, $escape) : $value);
-        }
-
         $this->where[] = array(
+            'type' => 'where',
             'column' => $column,
             'operator' => $operator,
-            'value' => $value
+            'value' => $value,
+            'nexus' => $nexus,
         );
+
         return $this;
     }
 
