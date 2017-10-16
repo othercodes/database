@@ -69,7 +69,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase
             $query = $db->getQuery();
             $query->select()
                 ->from('ts_users')
-                ->where('name', '=', 'Walter', true);
+                ->where('name', '=', 'Walter');
 
             $list = $db->setQuery($query)
                 ->on($connection)
