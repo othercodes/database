@@ -84,7 +84,7 @@ class Database
             $this->compilers[$this->connectors[$config['driver']]] = new $compiler();
         }
 
-        if ($default === true) {
+        if (count($this->connections) === 1 || $default === true) {
             $this->defaultConnection = $name;
         }
 

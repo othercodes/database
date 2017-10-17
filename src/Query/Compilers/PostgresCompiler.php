@@ -10,6 +10,18 @@ class PostgresCompiler extends Compiler
 {
 
     /**
+     * Default keyword wrapper
+     * @var string
+     */
+    protected $keyWrapper = "";
+
+    /**
+     * Default value wrapper
+     * @var string
+     */
+    protected $valueWrapper = "'";
+
+    /**
      * Allowed operators
      * @var array
      */

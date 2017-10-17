@@ -46,6 +46,12 @@ class Query
     protected $where = array();
 
     /**
+     * Where
+     * @var bool
+     */
+    protected $distinct = false;
+
+    /**
      * In statement
      * @var array
      */
@@ -156,19 +162,60 @@ class Query
      * @param string $column
      * @param string $operator
      * @param string|array $value
-     * @param string $nexus
+     * @param string $boolean
      * @return $this
      */
-    public function where($column, $operator, $value, $nexus = 'and')
+    public function where($column, $operator, $value, $boolean = 'and')
     {
         $this->where[] = array(
-            'type' => 'where',
+            'type' => 'basic',
             'column' => $column,
             'operator' => $operator,
             'value' => $value,
-            'nexus' => $nexus,
+            'boolean' => $boolean,
         );
 
+        return $this;
+    }
+
+    /**
+     * @param string $column
+     * @param string $operator
+     * @param string|array $value
+     * @return Query
+     */
+    public function orWhere($column, $operator, $value)
+    {
+        return $this->where($column, $operator, $value, 'or');
+    }
+
+    /**
+     * Add a WHERE IN() clause
+     * @param $column
+     * @param $values
+     * @param string $boolean
+     * @param bool $not
+     * @return $this
+     */
+    public function whereIn($column, $values, $boolean = 'and', $not = false)
+    {
+        $this->where[] = array(
+            'type' => $not ? 'notIn' : 'in',
+            'column' => $column,
+            'operator' => null,
+            'value' => $values,
+            'boolean' => $boolean,
+        );
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function distinct()
+    {
+        $this->distinct = true;
         return $this;
     }
 

@@ -32,7 +32,7 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
      * @depends testInstantiation
      * @param \OtherCode\Database\Database $db
      */
-    public function testGetNllConnection(\OtherCode\Database\Database $db)
+    public function testGetNullConnection(\OtherCode\Database\Database $db)
     {
         $this->assertNull($db->getConnection('none'));
     }

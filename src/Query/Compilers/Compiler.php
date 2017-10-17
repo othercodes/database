@@ -8,11 +8,21 @@ namespace OtherCode\Database\Query\Compilers;
  */
 abstract class Compiler
 {
+
+    const VALUE = 1;
+    const KEYWORD = 2;
+
     /**
-     * The default word wrapper
+     * Default keyword wrapper
      * @var string
      */
-    protected $wordWrapper = '`';
+    protected $keyWrapper = "`";
+
+    /**
+     * Default value wrapper
+     * @var string
+     */
+    protected $valueWrapper = '"';
 
     /**
      * Allowed operators
@@ -35,18 +45,27 @@ abstract class Compiler
 
     /**
      * @param $value
+     * @param $type
      * @return string
      */
-    public function wrap($value)
+    public function wrap($value, $type = 1)
     {
-        if ($value !== '*') {
-            return '"' . str_replace('"', '""', $value) . '"';
+        switch ($type) {
+            case self::KEYWORD:
+                return $this->keyWrapper . $value . $this->keyWrapper;
+                break;
+
+            case self::VALUE:
+                if ($value !== '*') {
+                    return $this->valueWrapper . str_replace('"', '""', $value) . $this->valueWrapper;
+                }
         }
         return $value;
     }
 
     /**
      * Compile the SQL query
+     * @param \OtherCode\Database\Query $query
      * @return string
      * @throws \OtherCode\Database\Exceptions\QueryException
      */
@@ -140,34 +159,47 @@ abstract class Compiler
 
     /**
      * Compile the WHERE statement
-     * @param array $where
+     * @param array $wheres
      * @return string
      * @throws \OtherCode\Database\Exceptions\QueryException
      */
-    public function compileWhere(array $where)
+    public function compileWhere(array $wheres)
     {
         $block = array();
-        foreach ($where as $index => $chunk) {
+        foreach ($wheres as $index => $where) {
 
-            if (!is_string($chunk['column'])) {
+            if (!is_string($where['column'])) {
                 throw new \OtherCode\Database\Exceptions\QueryException("The column field is not a string in where clause.");
             }
 
-            if (!is_string($chunk['operator']) || !in_array($chunk['operator'], $this->operators)) {
+            if (isset($where['operator']) && (!is_string($where['operator']) || !in_array($where['operator'], $this->operators))) {
                 throw new \OtherCode\Database\Exceptions\QueryException("Invalid operator in where clause.");
             }
 
-            $sentence = ($index == 0) ? "WHERE " : "AND ";
-
-            if (is_array($chunk['value'])) {
-                $chunk['value'] = '(' . implode(", ", $chunk['value']) . ')';
-            }
-
-            $block[] = $sentence . implode(' ', $chunk);
-
+            $block[] = strtoupper(($index == 0) ? 'WHERE' : $where['boolean']) . ' ' . $this->{'where' . ucfirst($where['type'])}($where);
         }
 
         return implode(' ', $block);
+    }
+
+    /**
+     * Compile a basic where clause
+     * @param array $where
+     * @return string
+     */
+    public function whereBasic($where)
+    {
+        return $this->wrap($where['column'], self::KEYWORD) . ' ' . $where['operator'] . ' ' . $where['value'];
+    }
+
+    /**
+     * Compile a where in clause
+     * @param $where
+     * @return string
+     */
+    public function whereIn($where)
+    {
+        return $this->wrap($where['column'], self::KEYWORD) . ' IN (' . implode(', ', $where['value']) . ')';
     }
 
     /**

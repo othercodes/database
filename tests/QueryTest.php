@@ -25,7 +25,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase
             ),
             'sqlite' => array(
                 'driver' => 'sqlite',
-                'dbname' => 'examples/test.sqlite',
+                'dbname' => dirname(__DIR__) . '/examples/test.sqlite',
             )
         ));
 
@@ -69,7 +69,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase
             $query = $db->getQuery();
             $query->select()
                 ->from('ts_users')
-                ->where('name', '=', 'Walter');
+                ->where('name', '=', $query->quote('Walter'));
 
             $list = $db->setQuery($query)
                 ->on($connection)
@@ -77,6 +77,28 @@ class QueryTest extends \PHPUnit\Framework\TestCase
                 ->loadObject();
 
             $this->assertInternalType('object', $list);
+        }
+    }
+
+    /**
+     * @depends testInstantiationBatch
+     */
+    public function testSelectWhereIn(\OtherCode\Database\Database $db)
+    {
+        $connections = array('mysql', 'pgsql', 'sqlite');
+        foreach ($connections as $connection) {
+            $query = $db->getQuery();
+            $query->select()
+                ->from('ts_users')
+                ->whereIN('id', array(1, 2));
+
+            $list = $db->setQuery($query)
+                ->on($connection)
+                ->execute()
+                ->loadObjectList();
+
+            $this->assertInternalType('array', $list);
+            $this->assertCount(2, $list);
         }
     }
 }

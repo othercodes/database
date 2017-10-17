@@ -25,7 +25,7 @@ class CompileTest extends \PHPUnit\Framework\TestCase
             ),
             'sqlite' => array(
                 'driver' => 'sqlite',
-                'dbname' => 'examples/test.sqlite',
+                'dbname' => dirname(__DIR__) . '/examples/test.sqlite',
             )
         ));
 
