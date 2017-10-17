@@ -48,18 +48,18 @@ class ConnectionTest extends \PHPUnit\Framework\TestCase
                 'host' => 'localhost',
                 'dbname' => 'test',
                 'username' => 'test',
-                'password' => ''
+                'password' => 'test'
             ),
             'pgsql' => array(
                 'driver' => 'pgsql',
                 'host' => 'localhost',
                 'dbname' => 'test',
                 'username' => 'test',
-                'password' => ''
+                'password' => 'test'
             ),
             'sqlite' => array(
                 'driver' => 'sqlite',
-                'dbname' => 'examples/test.sqlite',
+                'dbname' => dirname(__DIR__) . '/examples/test.sqlite',
             )
         ));
 

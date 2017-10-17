@@ -14,14 +14,14 @@ class QueryTest extends \PHPUnit\Framework\TestCase
                 'host' => 'localhost',
                 'dbname' => 'test',
                 'username' => 'test',
-                'password' => ''
+                'password' => 'test'
             ),
             'pgsql' => array(
                 'driver' => 'pgsql',
                 'host' => 'localhost',
                 'dbname' => 'test',
                 'username' => 'test',
-                'password' => ''
+                'password' => 'test'
             ),
             'sqlite' => array(
                 'driver' => 'sqlite',

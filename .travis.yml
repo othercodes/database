@@ -21,11 +21,11 @@ services:
 before_script:
   - mysql -u root -e "CREATE DATABASE IF NOT EXISTS test;"
   - mysql -u root test < examples/sql/mysql.sql
-  - mysql -u root -e "CREATE USER 'test'@'localhost' IDENTIFIED BY '';"
+  - mysql -u root -e "CREATE USER 'test'@'localhost' IDENTIFIED BY 'test';"
   - mysql -u root -e "GRANT ALL ON test.* TO 'test'@'localhost';"
   - psql -U postgres -c "CREATE DATABASE test;"
   - psql -U postgres -d test -a -f examples/sql/pgsql.sql
-  - psql -U postgres -c "CREATE USER test WITH PASSWORD '';"
+  - psql -U postgres -c "CREATE USER test WITH PASSWORD 'test';"
   - psql -U postgres -d test -c "ALTER TABLE ts_users OWNER TO test;"
   - touch examples/test.sqlite
   - sqlite3 examples/test.sqlite < examples/sql/sqlite.sql
